@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import RegistroView from '../views/RegistroView.vue'
 import LoginView from '../views/LoginView.vue'
+import InicioView from '../views/InicioView.vue'
 import PerfilView from '../views/PerfilView.vue'
 
 Vue.use(VueRouter)
@@ -20,7 +21,7 @@ const routes = [
   {
     path: '/inicio',
     name: 'inicio',
-    component: LoginView
+    component: InicioView
   },
   {
     path: '/user/:loginUsuario',
