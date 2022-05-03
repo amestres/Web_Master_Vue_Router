@@ -49,6 +49,13 @@ export default {
       if (response.data.data.resultado === 'ok') {
         console.log('Usuario encontrado')
         this.resetInputs()
+
+        const login = response.data.data.login
+        if (response.data.data.rol === 'normal') {
+          this.$router.push(`/${login}/comunidades`)
+        } else {
+          this.$router.push(`/ADMIN/${login}/comunidades`)
+        }
       } else {
         if (response.data.data.resultado === 'no_ok') {
           console.log('Usuario no encontrado')

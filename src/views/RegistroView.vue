@@ -1,7 +1,7 @@
 <template>
   <div>
     <div class="container-botones">
-      <router-link to="/" tag="button" class="button">Registro</router-link> |
+      <router-link to="/" tag="button" class="button">Registro</router-link>
       <router-link to="/login" tag="button" class="button">Login</router-link>
     </div>
 
@@ -62,6 +62,9 @@ export default {
       if (response.data.data.resultado === 'ok') {
         console.log('Usuario registrado')
         this.resetInputs()
+
+        const login = response.data.data.login
+        this.$router.push(`/${login}/comunidades`)
       } else {
         if (response.data.data.resultado === 'login_usuario_ya_existe') {
           console.log('Ya existe ese login')
