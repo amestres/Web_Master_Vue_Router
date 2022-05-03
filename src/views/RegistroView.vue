@@ -1,28 +1,36 @@
 <template>
-  <div class="container-formularios">
-    <form onsubmit="event.preventDefault()">
-      <div class="container-separador">
-        <label for="login" class="label-formulario">Login</label>
-        <input v-model="formData.login" type="text" name="login" required>
-      </div>
-      <div class="container-separador">
-        <label for="password" class="label-formulario">Password</label>
-        <input v-model="formData.password" type="password" name="password" required>
-      </div>
+  <div>
+    <div class="container-botones">
+      <router-link to="/" tag="button" class="button">Registro</router-link> |
+      <router-link to="/login" tag="button" class="button">Login</router-link>
+    </div>
 
-      <div class="container-separador">
-        <label for="nombre" class="label-formulario">Nombre</label>
-        <input v-model="formData.nombre" type="text" name="nombre" required>
-      </div>
+    <div class="container-formularios">
+      <form onsubmit="event.preventDefault()">
+        <div class="container-separador">
+          <label for="login" class="label-formulario">Login</label>
+          <input v-model="formData.login" type="text" name="login" required>
+        </div>
+        <div class="container-separador">
+          <label for="password" class="label-formulario">Password</label>
+          <input v-model="formData.password" type="password" name="password" required>
+        </div>
 
-      <div class="container-separador">
-        <label for="apellidos" class="label-formulario">Apellidos</label>
-        <input v-model="formData.apellidos" type="text" name="apellidos" required>
-      </div>
+        <div class="container-separador">
+          <label for="nombre" class="label-formulario">Nombre</label>
+          <input v-model="formData.nombre" type="text" name="nombre" required>
+        </div>
 
-      <input type="submit" id="boton" @click="crearUsuario" value="Registrar usuario">
-    </form>
+        <div class="container-separador">
+          <label for="apellidos" class="label-formulario">Apellidos</label>
+          <input v-model="formData.apellidos" type="text" name="apellidos" required>
+        </div>
+
+        <input type="submit" id="boton" class="button" @click="crearUsuario" value="Registrar usuario">
+      </form>
+    </div>
   </div>
+
 </template>
 
 <script>
@@ -71,6 +79,27 @@ export default {
 </script>
 
 <style scoped>
+  .container-botones{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  .button{
+    width: 16rem;
+    height: 4rem;
+    margin: 2rem;
+    border: 0.5px solid black;
+    border-radius: 20px;
+    font-size: 20px;
+    background-color: rgb(13, 108, 252);
+    color: white;
+  }
+
+  .button:hover{
+    background-color: #3246fc;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
 
   .container-formularios{
     display: flex;
@@ -96,21 +125,5 @@ export default {
 
   .label-formulario{
     font-size: .813rem;
-  }
-
-  #boton{
-    width: 16rem;
-    height: 4rem;
-    margin: 2rem;
-    border: 0.5px solid black;
-    border-radius: 20px;
-    font-size: 20px;
-    background-color: rgb(13, 108, 252);
-    color: white;
-  }
-
-  #boton:hover{
-    background-color: #3246fc;
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 </style>

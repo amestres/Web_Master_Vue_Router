@@ -1,9 +1,5 @@
 <template>
   <div id="app">
-    <div class="container-botones">
-      <router-link to="/" tag="button">Registro</router-link> |
-      <router-link to="/login" tag="button">Login</router-link>
-    </div>
     <router-view/>
   </div>
 </template>
@@ -15,32 +11,6 @@
     flex-direction: column;
     align-items: center;
     height: 100vh;
-  }
-
-  .container-botones{
-    width: 50%;
-    display: flex;
-    justify-content: center;
-  }
-
-  button{
-    width: 16rem;
-    height: 4rem;
-    margin: 2rem;
-    border: 0.5px solid black;
-    border-radius: 20px;
-    font-size: 20px;
-    background-color: rgb(13, 108, 252);
-    color: white;
-  }
-
-  button:hover{
-    background-color: #3246fc;
-    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
-  }
-
-  button:visited{
-    background-color: #3246fc;
   }
 
 /* RESET DE LOS ESTILOS DEFAULT */
