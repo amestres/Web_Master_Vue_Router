@@ -2,8 +2,8 @@
   <div id="container-main">
     <div class="container-menu">
       <button class="button" @click="goTo('comunidades')">Comunidades</button>
-      <button class="button" @click="goTo('reservas')">Reservas</button>
-      <button class="button" @click="goTo('perfil')">Perfil</button>
+      <button class="button" @click="goTo('crearComunidad')">Crear comunidad</button>
+      <button class="button" @click="goTo('usuarios')">Usuarios</button>
     </div>
   </div>
 </template>
@@ -12,7 +12,7 @@
 import { mapState } from 'vuex' // para poder usar los atajos en esta vista tenemos que importarlos de vuex
 
 export default {
-  name: 'MenuNormal',
+  name: 'MenuAdmin',
   data () {
     return {
       string: ''
@@ -26,7 +26,7 @@ export default {
       if (this.loginGlobal === '') { // controlamos que haya un login guardado en el vuex
         this.$router.push('/error') // si no hay ningún login guardado de manera global, mostramos una view de error y damos la opción de volver a logearse
       } else {
-        this.$router.push(`/${this.loginGlobal}/${palabra}`)
+        this.$router.push(`/ADMIN/${this.loginGlobal}/${palabra}`)
       }
     }
   }

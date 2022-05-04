@@ -10,7 +10,7 @@ import MenuAdmin from '../components/MenuAdmin.vue'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'AdminComunidadesView',
+  name: 'AdminUsuariosView',
   components: {
     MenuAdmin
   },

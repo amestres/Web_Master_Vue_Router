@@ -1,12 +1,17 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+
 import RegistroView from '../views/RegistroView.vue'
 import LoginView from '../views/LoginView.vue'
+import ErrorView from '../views/ErrorView.vue'
+
 import ComunidadesView from '../views/ComunidadesView.vue'
 import ReservasView from '../views/ReservasView.vue'
 import PerfilView from '../views/PerfilView.vue'
 
 import AdminComunidadesView from '../views/AdminComunidadesView.vue'
+import AdminCrearComunidadView from '../views/AdminCrearComunidadView.vue'
+import AdminUsuariosView from '../views/AdminUsuariosView.vue'
 
 Vue.use(VueRouter)
 
@@ -20,6 +25,11 @@ const routes = [
     path: '/login',
     name: 'login',
     component: LoginView
+  },
+  {
+    path: '/error',
+    name: 'error',
+    component: ErrorView
   },
 
   // USUARIO NORMAL
@@ -46,9 +56,14 @@ const routes = [
     component: AdminComunidadesView
   },
   {
-    path: '/ADMIN/:userLogin/comunidad/:id_comunidad',
-    name: 'editarComunidad',
-    component: ComunidadesView
+    path: '/ADMIN/:userLogin/crearComunidad',
+    name: 'adminCrearComunidad',
+    component: AdminCrearComunidadView
+  },
+  {
+    path: '/ADMIN/:userLogin/usuarios',
+    name: 'adminUsuarios',
+    component: AdminUsuariosView
   }
 ]
 
