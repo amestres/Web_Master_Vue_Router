@@ -1,7 +1,7 @@
 <template>
-  <div id="container-main">
+  <div class="container-main">
     <MenuAdmin></MenuAdmin>
-    <router-view/>
+    <p>1</p>
   </div>
 </template>
 
@@ -21,5 +21,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .container-main{
+    width: 100%;
+  }
 </style>

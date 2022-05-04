@@ -1,11 +1,9 @@
 <template>
-  <div id="container-main">
     <div class="container-menu">
       <button class="button" @click="goTo('comunidades')">Comunidades</button>
       <button class="button" @click="goTo('reservas')">Reservas</button>
       <button class="button" @click="goTo('perfil')">Perfil</button>
     </div>
-  </div>
 </template>
 
 <script>
@@ -36,7 +34,6 @@ export default {
 <style scoped>
   .container-main{
     width: 100%;
-    height: 100vh;
   }
 
   .container-menu{

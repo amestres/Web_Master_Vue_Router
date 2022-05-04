@@ -1,7 +1,7 @@
 <template>
-  <div id="container-main">
+  <div class="container-main">
     <MenuNormal></MenuNormal>
-    <router-view/>
+    <p>3</p>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import MenuNormal from '../components/MenuNormal.vue'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'ComunidadesView',
+  name: 'PerfilView',
   components: {
     MenuNormal
   },
@@ -21,5 +21,7 @@ export default {
 </script>
 
 <style scoped>
-
+  .container-main{
+    width: 100%;
+  }
 </style>

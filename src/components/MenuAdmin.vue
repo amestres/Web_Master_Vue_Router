@@ -1,10 +1,8 @@
 <template>
-  <div id="container-main">
-    <div class="container-menu">
-      <button class="button" @click="goTo('comunidades')">Comunidades</button>
-      <button class="button" @click="goTo('crearComunidad')">Crear comunidad</button>
-      <button class="button" @click="goTo('usuarios')">Usuarios</button>
-    </div>
+  <div class="container-menu">
+    <button class="button" @click="goTo('comunidades')">Comunidades</button>
+    <button class="button" @click="goTo('crearComunidad')">Crear comunidad</button>
+    <button class="button" @click="goTo('usuarios')">Usuarios</button>
   </div>
 </template>
 
@@ -34,13 +32,7 @@ export default {
 </script>
 
 <style scoped>
-  .container-main{
-    width: 100%;
-    height: 100vh;
-  }
-
   .container-menu{
-    width: 100%;
     height: 4rem;
     display: flex;
     justify-content: center;
