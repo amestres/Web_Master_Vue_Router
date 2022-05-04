@@ -7,16 +7,15 @@
 
 <script>
 import MenuNormal from '../components/MenuNormal.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ReservasView',
   components: {
     MenuNormal
   },
-  data () {
-    return {
-
-    }
+  computed: {
+    ...mapState(['idGlobal', 'loginGlobal'])
   }
 }
 </script>

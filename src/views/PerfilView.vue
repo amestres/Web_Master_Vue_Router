@@ -7,19 +7,15 @@
 
 <script>
 import MenuNormal from '../components/MenuNormal.vue'
+import { mapState } from 'vuex'
 
 export default {
   name: 'ComunidadesView',
   components: {
     MenuNormal
   },
-  data () {
-    return {
-
-    }
-  },
-  mounted () {
-    this.info = this.$route.params.loginUsuario
+  computed: {
+    ...mapState(['idGlobal', 'loginGlobal'])
   }
 }
 </script>

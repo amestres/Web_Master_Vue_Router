@@ -35,6 +35,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapMutations } from 'vuex' // para poder usar los atajos en esta vista tenemos que importarlos de vuex
 
 export default {
   name: 'RegistroView',
@@ -48,7 +49,12 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['idGlobal', 'loginGlobal']) // usamos el mapState para traer las variables del vuex que queramos usar
+  },
   methods: {
+    ...mapMutations(['setLogin', 'setId']), // LAS MUTACIONES SIEMPRE TIENEN QUE IR EN METHODS
+
     // Funcion para crear un usuario nuevo (con rol normal)
     async crearUsuario () {
       const response = await axios.post('http://localhost/api/?servicio=registrar_usuario', {
@@ -61,10 +67,11 @@ export default {
       // Mostramos por consola que mensaje nos ha devuelto la api
       if (response.data.data.resultado === 'ok') {
         console.log('Usuario registrado')
-        this.resetInputs()
 
-        const login = response.data.data.login
-        this.$router.push(`/${login}/comunidades`)
+        this.setLogin(this.formData.login) // modificamos el valor de la variable global loginGlobal
+        this.setId(response.data.data.id) // modificamos el valor de la variable global idGlobal
+        this.$router.push(`/${this.loginGlobal}/comunidades`)
+        this.resetInputs()
       } else {
         if (response.data.data.resultado === 'login_usuario_ya_existe') {
           console.log('Ya existe ese login')

@@ -26,6 +26,7 @@
 
 <script>
 import axios from 'axios'
+import { mapState, mapMutations } from 'vuex' // para poder usar los atajos en esta vista tenemos que importarlos de vuex
 
 export default {
   name: 'LoginView',
@@ -37,7 +38,12 @@ export default {
       }
     }
   },
+  computed: {
+    ...mapState(['idGlobal', 'loginGlobal']) // usamos el mapState para traer las variables del vuex que queramos usar
+  },
   methods: {
+    ...mapMutations(['setLogin', 'setId']), // LAS MUTACIONES SIEMPRE TIENEN QUE IR EN METHODS
+
     // Funcion para ver si existe un registro con login y la password que se han introducido
     async logearUsuario () {
       const response = await axios.post('http://localhost/api/?servicio=login', {
@@ -50,11 +56,13 @@ export default {
         console.log('Usuario encontrado')
         this.resetInputs()
 
-        const login = response.data.data.login
+        this.setLogin(response.data.data.login) // modificamos el valor de la variable global
+        this.setId(response.data.data.id)
+
         if (response.data.data.rol === 'normal') {
-          this.$router.push(`/${login}/comunidades`)
+          this.$router.push(`/${this.loginGlobal}/comunidades`)
         } else {
-          this.$router.push(`/ADMIN/${login}/comunidades`)
+          this.$router.push(`/ADMIN/${this.loginGlobal}/comunidades`)
         }
       } else {
         if (response.data.data.resultado === 'no_ok') {

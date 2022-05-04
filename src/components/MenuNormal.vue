@@ -1,20 +1,29 @@
 <template>
   <div id="container-main">
     <div class="container-menu">
-      <router-link to="/:userLogin/comunidades" tag="button" class="button">Comunidades</router-link>
-      <router-link to="/:userLogin/reservas" tag="button" class="button">Reservas</router-link>
-      <router-link to="/:userLogin/perfil" tag="button" class="button">Perfil</router-link>
+      <button class="button" @click="goTo('comunidades')">Comunidades</button>
+      <button class="button" @click="goTo('reservas')">Reservas</button>
+      <button class="button" @click="goTo('perfil')">Perfil</button>
     </div>
   </div>
 </template>
 
 <script>
+import { mapState } from 'vuex' // para poder usar los atajos en esta vista tenemos que importarlos de vuex
 
 export default {
   name: 'MenuNormal',
   data () {
     return {
-
+      string: ''
+    }
+  },
+  computed: {
+    ...mapState(['idGlobal', 'loginGlobal']) // usamos el mapState para traer las variables del vuex que queramos usar
+  },
+  methods: {
+    goTo (palabra) { // meétodo que s elanza cuando pulsamos en un botón del menú. Recibe por parámetros un string con el nombre de la view que queremos que se muestre
+      this.$router.push(`/${this.loginGlobal}/${palabra}`)
     }
   }
 }
