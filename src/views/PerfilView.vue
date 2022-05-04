@@ -1,16 +1,21 @@
 <template>
-  <div id="container">
-      <p>{{info}}</p>
+  <div id="container-main">
+    <MenuNormal></MenuNormal>
+    <router-view/>
   </div>
 </template>
 
 <script>
+import MenuNormal from '../components/MenuNormal.vue'
 
 export default {
-  name: 'PerfilView',
+  name: 'ComunidadesView',
+  components: {
+    MenuNormal
+  },
   data () {
     return {
-      info: ''
+
     }
   },
   mounted () {
@@ -18,3 +23,7 @@ export default {
   }
 }
 </script>
+
+<style scoped>
+
+</style>

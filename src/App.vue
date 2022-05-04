@@ -10,6 +10,9 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  body{
     height: 100vh;
   }
 
