@@ -1,5 +1,5 @@
 <template>
-  <div class="container-card">
+  <div class="container-card" @click="goTo">
       <p>{{info.nombre_comunidad}}</p>
       <p>{{info.direccion}}</p>
       <p>{{info.codigo_postal}}</p>
@@ -8,6 +8,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex'
 
 export default {
   name: 'ComunidadCard',
@@ -16,7 +17,15 @@ export default {
       string: ''
     }
   },
-  props: ['info']
+  props: ['info'],
+  computed: {
+    ...mapState(['loginGlobal'])
+  },
+  methods: {
+    goTo () {
+      this.$router.push(`/ADMIN/${this.loginGlobal}/editarComunidad`)
+    }
+  }
 }
 </script>
 

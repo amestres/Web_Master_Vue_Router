@@ -12,6 +12,7 @@ import PerfilView from '../views/PerfilView.vue'
 import AdminComunidadesView from '../views/AdminComunidadesView.vue'
 import AdminCrearComunidadView from '../views/AdminCrearComunidadView.vue'
 import AdminUsuariosView from '../views/AdminUsuariosView.vue'
+import AdminEditarComunidadView from '../views/AdminEditarComunidadView.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,11 @@ const routes = [
     path: '/ADMIN/:userLogin/crearComunidad',
     name: 'adminCrearComunidad',
     component: AdminCrearComunidadView
+  },
+  {
+    path: '/ADMIN/:userLogin/editarComunidad',
+    name: 'adminEditarComunidad',
+    component: AdminEditarComunidadView
   },
   {
     path: '/ADMIN/:userLogin/usuarios',

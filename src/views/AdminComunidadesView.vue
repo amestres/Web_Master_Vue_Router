@@ -48,9 +48,7 @@ export default {
     ...mapState(['idGlobal', 'loginGlobal'])
   },
   methods: {
-    async obtenerComunidades () {
 
-    }
   }
 }
 </script>

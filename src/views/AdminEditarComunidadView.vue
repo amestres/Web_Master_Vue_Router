@@ -5,36 +5,36 @@
       <form onsubmit="event.preventDefault()" class="container-form">
         <div class="container-separador">
           <label for="nombre" class="label-formulario">Nombre</label>
-          <input v-model="nombre" type="text" name="nombre" id="input-nombre" required autofocus >
+          <input v-model="nombre" type="text" name="nombre" required>
         </div>
         <div class="container-separador">
           <label for="direccion" class="label-formulario">Dirección</label>
-          <input v-model="direccion" type="text" name="direccion" id="input-direccion" required>
+          <input v-model="direccion" type="text" name="direccion" required>
         </div>
 
         <div class="container-separador">
           <label for="codigo_postal" class="label-formulario">Código Postal</label>
-          <input v-model="codigo_postal" type="text" name="codigo_postal" maxlength="5"  id="input-codigoPostal" required>
+          <input v-model="codigoPostal" type="text" name="codigo_postal" maxlength="5" required>
         </div>
 
         <div class="container-separador">
           <label for="descripcion" class="label-formulario">Descripción</label>
-          <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" id="textArea-descripcion" required></textarea>
+          <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" required></textarea>
         </div>
 
-        <input type="submit" class="button" @click="crearComunidad" value="Crear comunidad">
+        <input type="submit" class="button" @click="crearUsuario" value="Crear comunidad">
       </form>
     </div>
   </div>
 </template>
 
 <script>
-import axios from 'axios'
+// import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import { mapState } from 'vuex'
 
 export default {
-  name: 'AdminCrearComunidadView',
+  name: 'AdminEditarComunidadView',
   components: {
     MenuAdmin
   },
@@ -42,7 +42,7 @@ export default {
     return {
       nombre: '',
       direccion: '',
-      codigo_postal: '',
+      codigoPostal: '',
       descripcion: ''
     }
   },
@@ -50,46 +50,7 @@ export default {
     ...mapState(['idGlobal', 'loginGlobal'])
   },
   methods: {
-    async crearComunidad () {
-      if (this.validarCodigoPostal(this.codigo_postal)) {
-        const response = await axios.post('http://localhost/api/?servicio=alta_comunidad', {
-          id_administrador: this.idGlobal,
-          nombre: this.nombre,
-          direccion: this.direccion,
-          codigo_postal: this.codigo_postal,
-          descripcion: this.descripcion
-        })
 
-        // Mostramos por consola que mensaje nos ha devuelto la api
-        if (response.data.data.resultado === 'ok') {
-          console.log('Comunidad creada')
-          this.resetInputs()
-          document.getElementById('input-nombre').focus()
-        } else {
-          if (response.data.data.resultado === 'login_usuario_ya_existe') {
-            console.log('Ya existe ese login')
-          }
-        }
-      } else {
-        console.log('el código postal no es válido')
-        document.getElementById('input-codigoPostal').focus()
-      }
-    },
-
-    resetInputs () {
-      this.nombre = ''
-      this.direccion = ''
-      this.codigo_postal = ''
-      this.descripcion = ''
-    },
-
-    validarCodigoPostal (codigoPostal) {
-      if (codigoPostal.length === 5 && parseInt(codigoPostal) >= 1000 && parseInt(codigoPostal) <= 52999) {
-        return true
-      } else {
-        return false
-      }
-    }
   }
 }
 </script>
