@@ -33,7 +33,7 @@ export default {
 
 <style scoped>
   .container-menu{
-    height: 4rem;
+    height: 8%;
     display: flex;
     justify-content: center;
     background-color: #5271ff;

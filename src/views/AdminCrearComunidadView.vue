@@ -22,6 +22,14 @@ export default {
 
 <style scoped>
   .container-main{
+    height: 100%;
     width: 100%;
+  }
+
+  .container-comunidades{
+    height: 92%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 </style>
