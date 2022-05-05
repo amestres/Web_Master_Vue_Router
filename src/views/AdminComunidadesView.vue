@@ -2,7 +2,7 @@
   <div class="container-main">
     <MenuAdmin></MenuAdmin>
     <div class="container-comunidades">
-      <ComunidadCard v-for="comunidad in cantidadComunidades" :key="comunidad.id_administrador"></ComunidadCard>
+      <ComunidadCard v-for="comunidad in cantidadComunidades" :key="comunidad.id_administrador" :info="comunidades[comunidad-1]"></ComunidadCard>
     </div>
   </div>
 </template>
@@ -21,7 +21,7 @@ export default {
   },
   data () {
     return {
-      comunidades: {},
+      comunidades: [],
       cantidadComunidades: ''
     }
   },
@@ -33,11 +33,11 @@ export default {
 
     // Creamos un nuevo div y mostramos la información de cada comunidad devuelta
     if (response.data.data.resultado === 'ok') {
-      this.cantidadComunidades = response.data.data.datos.length
-      for (let x = 0; x < response.data.data.datos.length; x++) {
+      this.cantidadComunidades = response.data.data.datos.length // Guardamos el número de registros que nos ha devuelto la consulta
+
+      for (let x = 0; x < response.data.data.datos.length; x++) { // Sabiendo el número máximo de registros, guardamos la info de cada registro en una array
         this.comunidades[x] = response.data.data.datos[x]
       }
-      console.log(this.comunidades)
     } else {
       if (response.data.data.resultado === 'sin_resultados') {
         console.log('Este administrador no tiene ningúna comunidad creada')

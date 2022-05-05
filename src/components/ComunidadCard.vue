@@ -1,6 +1,9 @@
 <template>
   <div class="container-card">
-
+      <p>{{info.nombre_comunidad}}</p>
+      <p>{{info.direccion}}</p>
+      <p>{{info.codigo_postal}}</p>
+      <p>{{info.descripcion}}</p>
   </div>
 </template>
 
@@ -12,7 +15,8 @@ export default {
     return {
       string: ''
     }
-  }
+  },
+  props: ['info']
 }
 </script>
 
