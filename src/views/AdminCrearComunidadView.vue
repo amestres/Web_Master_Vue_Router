@@ -51,7 +51,7 @@ export default {
   },
   methods: {
     async crearComunidad () {
-      if (this.validarCodigoPostal(this.codigo_postal)) {
+      if (this.validarCodigoPostal(this.codigo_postal)) { // Controlamos que el código postal sea válido
         const response = await axios.post('http://localhost/api/?servicio=alta_comunidad', {
           id_administrador: this.idGlobal,
           nombre: this.nombre,
@@ -66,24 +66,24 @@ export default {
           this.resetInputs()
           document.getElementById('input-nombre').focus()
         } else {
-          if (response.data.data.resultado === 'login_usuario_ya_existe') {
-            console.log('Ya existe ese login')
+          if (response.data.data.resultado === 'administrador_no_existe') {
+            console.log('No existe un administrador con ese id')
           }
         }
       } else {
-        console.log('el código postal no es válido')
+        console.log('El código postal no es válido')
         document.getElementById('input-codigoPostal').focus()
       }
     },
 
-    resetInputs () {
+    resetInputs () { // Cuando creamos una comunidad nueva, al finalizar el proceso limpiamos los imputs para que el administrador pueda crear una nueva.
       this.nombre = ''
       this.direccion = ''
       this.codigo_postal = ''
       this.descripcion = ''
     },
 
-    validarCodigoPostal (codigoPostal) {
+    validarCodigoPostal (codigoPostal) { // Controlamos que el código postal que obtenemos con el input sea válido. Si es válido devolvemos un true
       if (codigoPostal.length === 5 && parseInt(codigoPostal) >= 1000 && parseInt(codigoPostal) <= 52999) {
         return true
       } else {
