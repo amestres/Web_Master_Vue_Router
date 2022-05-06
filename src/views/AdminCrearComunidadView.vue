@@ -32,7 +32,6 @@
 <script>
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'AdminCrearComunidadView',
@@ -44,17 +43,15 @@ export default {
       nombre: '',
       direccion: '',
       codigo_postal: '',
-      descripcion: ''
+      descripcion: '',
+      id_administrador: localStorage.id_usuario
     }
-  },
-  computed: {
-    ...mapState(['idGlobal', 'loginGlobal'])
   },
   methods: {
     async crearComunidad () {
       if (this.validarCodigoPostal(this.codigo_postal)) { // Controlamos que el código postal sea válido
         const response = await axios.post('http://localhost/api/?servicio=alta_comunidad', {
-          id_administrador: this.idGlobal,
+          id_administrador: this.id_administrador,
           nombre: this.nombre,
           direccion: this.direccion,
           codigo_postal: this.codigo_postal,

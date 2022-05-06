@@ -39,7 +39,6 @@
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import VecinoCard from '../components/VecinoCard.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'AdminEditarComunidadView',
@@ -49,7 +48,8 @@ export default {
   },
   data () {
     return {
-      id_comunidad: '',
+      id_comunidad: localStorage.id_comunidad,
+      id_administrador: localStorage.id_usuario,
       nombre: '',
       direccion: '',
       codigo_postal: '',
@@ -60,21 +60,22 @@ export default {
   },
   async mounted () {
     const response = await axios.post('http://localhost/api/?servicio=obtener_comunidades', {
-      id_comunidad: this.idComunidadEditar
+      id_comunidad: this.id_comunidad
     })
 
     if (response.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
       this.nombre = response.data.data.datos[0].nombre_comunidad
       this.direccion = response.data.data.datos[0].direccion
-      this.codigo_postal = response.data.data.datos[0].codigo_postal
+
+      this.codigo_postal = this.validarLongitud(response.data.data.datos[0].codigo_postal)
       this.descripcion = response.data.data.datos[0].descripcion
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
     }
 
-    // Llamada a la api para mostrar los vecino que pertenecen a esa comunidad
+    // Llamada a la api para mostrar los vecinos que pertenecen a esa comunidad
     const responseVecinos = await axios.post('http://localhost/api/?servicio=obtener_asignaciones', {
-      id_comunidad: this.idComunidadEditar
+      id_comunidad: this.id_comunidad
     })
 
     if (responseVecinos.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
@@ -87,15 +88,13 @@ export default {
       console.log('Esta comunidad no tiene vecinos')
     }
   },
-  computed: {
-    ...mapState(['idGlobal', 'loginGlobal', 'idComunidadEditar'])
-  },
   methods: {
     async editarComunidad () {
       if (this.validarCodigoPostal(this.codigo_postal)) {
+        console.log(this.id_comunidad)
         const response = await axios.post('http://localhost/api/?servicio=modificar_comunidad', {
-          id_comunidad: this.idComunidadEditar,
-          id_administrador: this.idGlobal,
+          id_comunidad: this.id_comunidad,
+          id_administrador: this.id_administrador,
           nombre: this.nombre,
           direccion: this.direccion,
           codigo_postal: this.codigo_postal,
@@ -122,6 +121,14 @@ export default {
         return true
       } else {
         return false
+      }
+    },
+
+    validarLongitud (codigoPostal) { // Controlamos que se muestren 5 dígitos, ya que la api no detecta los primero ceros en un número
+      if (codigoPostal.length < 5) {
+        return '0' + codigoPostal
+      } else if (codigoPostal.length === 5) {
+        return codigoPostal
       }
     }
   }

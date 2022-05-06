@@ -1,32 +1,54 @@
 <template>
   <div class="container-card" @click="goTo">
-      <p>{{info.nombre_comunidad}}</p>
-      <p>{{info.direccion}}</p>
-      <p>{{info.codigo_postal}}</p>
-      <p>{{info.descripcion}}</p>
+    <div class="container-nombre-eliminar">
+      <p>Nombre: {{info.nombre_comunidad}}</p>
+      <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id_comunidad)" style="font-size: 1.5em"></i>
+    </div>
+
+      <p>Dirección: {{info.direccion}}</p>
+      <p>Código postal: {{info.codigo_postal}}</p>
+      <p>Descripción: {{info.descripcion}}</p>
   </div>
 </template>
 
 <script>
-import { mapState, mapMutations } from 'vuex'
+import axios from 'axios'
 
 export default {
   name: 'ComunidadCard',
   data () {
     return {
-      string: ''
+      string: '',
+      login: localStorage.login
     }
   },
   props: ['info'],
-  computed: {
-    ...mapState(['loginGlobal'])
-  },
   methods: {
-    ...mapMutations(['setIdComunidadEditar']), // LAS MUTACIONES SIEMPRE TIENEN QUE IR EN METHODS
 
     goTo () {
-      this.setIdComunidadEditar(this.info.id_comunidad)
-      this.$router.push(`/ADMIN/${this.loginGlobal}/comunidad/${this.info.id_comunidad}`)
+      localStorage.id_comunidad = this.info.id_comunidad // Guardamos el login y el id del usuario en el storage
+
+      this.$router.push(`/ADMIN/${this.login}/comunidad/${this.info.id_comunidad}`)
+    },
+
+    openAlert (id) {
+      localStorage.id_comunidad = id
+      this.$confirm('¿Desea eliminar la comunidad?', '', 'question').then(() => {
+        this.eliminarComunidad()
+      })
+    },
+
+    async eliminarComunidad () {
+      const response = await axios.post('http://localhost/api/?servicio=eliminar_comunidad', {
+        id_comunidad: localStorage.id_comunidad
+      })
+
+      if (response.data.data.resultado === 'ok') {
+        console.log('Comunidad eliminada con éxito')
+        this.$router.go()
+      } else if (response.data.data.resultado === 'id_comunidad_no_existe') {
+        console.log('No existe ninguna comunidad con este id')
+      }
     }
   }
 }
@@ -37,16 +59,25 @@ export default {
     height: 200px;
     width: 50%;
     margin-top: 20px;
+    padding: 20px;
     background-color: #E7EFFF;
     border: 1px solid grey;
     border-radius: 15px;
   }
   .container-card:hover{
     height: 200px;
-    width: 52%;
     margin-top: 20px;
     background-color: #E7EFFF;
     border-radius: 15px;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
+  .container-nombre-eliminar{
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .icono-eliminar:hover{
+    color:red
   }
 </style>

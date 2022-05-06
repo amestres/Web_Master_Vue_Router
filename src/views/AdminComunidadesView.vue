@@ -11,7 +11,6 @@
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import ComunidadCard from '../components/ComunidadCard.vue'
-import { mapState } from 'vuex'
 
 export default {
   name: 'AdminComunidadesView',
@@ -22,11 +21,16 @@ export default {
   data () {
     return {
       comunidades: [],
-      cantidadComunidades: ''
+      cantidadComunidades: '',
+
+      // GLOBAL
+      login: localStorage.login,
+      id: localStorage.id_usuario
     }
   },
   async mounted () {
-    const idAdministrador = this.idGlobal
+    const idAdministrador = this.id
+
     const response = await axios.post('http://localhost/api/?servicio=obtener_comunidades', {
       idAdministrador
     })
@@ -43,9 +47,6 @@ export default {
         console.log('Este administrador no tiene ningúna comunidad creada')
       }
     }
-  },
-  computed: {
-    ...mapState(['idGlobal', 'loginGlobal'])
   },
   methods: {
 

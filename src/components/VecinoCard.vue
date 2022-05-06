@@ -1,8 +1,8 @@
 <template>
-  <div class="container-vecino" @click="goTo">
-      <div class="container-login-x container-separador">
+  <div class="container-vecino" id="vecinos">
+      <div class="container-login-eliminar container-separador">
           <p>Login: {{login}}</p>
-          <i class="uil uil-trash-alt icono-eliminar"></i>
+          <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)"></i>
       </div>
       <div class="container-separador">
           <p>Nombre: {{nombre}}</p>
@@ -15,7 +15,6 @@
 
 <script>
 import axios from 'axios'
-import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'VecinoCard',
@@ -23,7 +22,8 @@ export default {
     return {
       login: '',
       nombre: '',
-      apellidos: ''
+      apellidos: '',
+      id_usuario: ''
     }
   },
   props: ['info'],
@@ -37,18 +37,31 @@ export default {
       this.login = responseUsuario.data.data.datos[0].login
       this.nombre = responseUsuario.data.data.datos[0].nombre
       this.apellidos = responseUsuario.data.data.datos[0].apellidos
+      this.id_usuario = responseUsuario.data.data.datos[0].id_usuario
     } else if (responseUsuario.data.data.resultado === 'sin_resultados') {
       console.log('Esta comunidad no tiene vecinos')
     }
   },
-  computed: {
-    ...mapState(['loginGlobal'])
-  },
   methods: {
-    ...mapMutations(['setIdComunidadEditar']), // LAS MUTACIONES SIEMPRE TIENEN QUE IR EN METHODS
 
-    goTo () {
+    openAlert (id) {
+      localStorage.id_vecino = id
+      this.$confirm('¿Desea expulsar este usuario de la comunidad?', '', 'question').then(() => {
+        this.eliminarVecino()
+      })
+    },
 
+    async eliminarVecino () {
+      const response = await axios.post('http://localhost/api/?servicio=eliminar_asignacion', {
+        id_asignacion: localStorage.id_vecino
+      })
+
+      if (response.data.data.resultado === 'ok') {
+        console.log('Vecino eliminado de la comunidad')
+        this.$router.go()
+      } else if (response.data.data.resultado === 'id_asignacion_no_existe') {
+        console.log('No existe ningún id de asignación así')
+      }
     }
   }
 }
@@ -69,7 +82,7 @@ export default {
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 
-  .container-login-x{
+  .container-login-eliminar{
     display: flex;
     justify-content: space-between;
   }
