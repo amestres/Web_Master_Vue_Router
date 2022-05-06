@@ -2,7 +2,6 @@
   <div class="container-menu">
     <button class="button" @click="goTo('comunidades')">Comunidades</button>
     <button class="button" @click="goTo('crearComunidad')">Crear comunidad</button>
-    <button class="button" @click="goTo('usuarios')">Usuarios</button>
   </div>
 </template>
 
@@ -33,7 +32,7 @@ export default {
 
 <style scoped>
   .container-menu{
-    height: 8%;
+    height: 70px;
     display: flex;
     justify-content: center;
     background-color: #5271ff;

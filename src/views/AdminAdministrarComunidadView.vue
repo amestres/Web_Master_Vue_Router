@@ -2,7 +2,7 @@
   <div class="container-main">
     <MenuAdmin></MenuAdmin>
     <div class="container-formulario">
-      <h1 class="title">Editar comunidad</h1>
+      <h1 class="title">Administrar comunidad</h1>
       <form onsubmit="event.preventDefault()" class="container-form">
         <div class="container-separador">
           <label for="nombre" class="label-formulario">Nombre</label>
@@ -23,8 +23,14 @@
           <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" required></textarea>
         </div>
 
-        <input type="submit" class="button" @click="editarComunidad" value="Editar comunidad">
+        <input type="submit" class="button" @click="editarComunidad" value="Guardar cambios">
       </form>
+    </div>
+    <div class="container-usuarios">
+      <h1 class="title-vecinos">Vecinos</h1>
+      <div class="container-lista-usuarios">
+        <VecinoCard v-for="vecino in cantidadVecinos" :key="vecino.id" :info="vecinos[vecino-1]"></VecinoCard>
+      </div>
     </div>
   </div>
 </template>
@@ -32,12 +38,14 @@
 <script>
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
+import VecinoCard from '../components/VecinoCard.vue'
 import { mapState } from 'vuex'
 
 export default {
   name: 'AdminEditarComunidadView',
   components: {
-    MenuAdmin
+    MenuAdmin,
+    VecinoCard
   },
   data () {
     return {
@@ -45,7 +53,9 @@ export default {
       nombre: '',
       direccion: '',
       codigo_postal: '',
-      descripcion: ''
+      descripcion: '',
+      vecinos: [],
+      cantidadVecinos: ''
     }
   },
   async mounted () {
@@ -60,6 +70,21 @@ export default {
       this.descripcion = response.data.data.datos[0].descripcion
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
+    }
+
+    // Llamada a la api para mostrar los vecino que pertenecen a esa comunidad
+    const responseVecinos = await axios.post('http://localhost/api/?servicio=obtener_asignaciones', {
+      id_comunidad: this.idComunidadEditar
+    })
+
+    if (responseVecinos.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
+      this.cantidadVecinos = responseVecinos.data.data.datos.length
+
+      for (let x = 0; x < responseVecinos.data.data.datos.length; x++) {
+        this.vecinos[x] = responseVecinos.data.data.datos[x]
+      }
+    } else if (responseVecinos.data.data.resultado === 'sin_resultados') {
+      console.log('Esta comunidad no tiene vecinos')
     }
   },
   computed: {
@@ -79,7 +104,6 @@ export default {
 
         if (response.data.data.resultado === 'ok') {
           console.log('Información actualizada')
-          this.resetInputs()
         } else if (response.data.data.resultado === 'id_comunidad_no_existe') { // Informamos por consola dependiendo del resultado que nos devuelve la llamada
           console.log('Hay un error con el id de la comunidad')
         } else if (response.data.data.resultado === 'administrador_no_existe') {
@@ -91,13 +115,6 @@ export default {
         console.log('El código postal no es válido')
         document.getElementById('input-codigoPostal').focus()
       }
-    },
-
-    resetInputs () {
-      this.nombre = ''
-      this.direccion = ''
-      this.codigo_postal = ''
-      this.descripcion = ''
     },
 
     validarCodigoPostal (codigoPostal) { // Controlamos que el código postal que obtenemos con el input sea válido. Si es válido devolvemos un true.
@@ -177,5 +194,31 @@ export default {
   .button:hover{
     background-color: #3246fc;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
+  .container-usuarios{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .title-vecinos{
+    margin-top: 80px;
+    font-size: 28px;
+  }
+
+  .container-lista-usuarios{
+    width: 30rem;
+    height: 30rem;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border: 1px solid grey;
+    border-radius: .5rem;
+    padding: .75rem 1rem .25rem;
+    overflow-y: auto;
   }
   </style>

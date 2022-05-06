@@ -1,5 +1,6 @@
 <template>
   <div id="app">
+    <link rel="stylesheet" href="https://unicons.iconscout.com/release/v4.0.0/css/line.css">
     <router-view/>
   </div>
 </template>
@@ -10,12 +11,11 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    height: 100%;
-    width: 100vw;
+    width: 100%;
   }
 
   body{
-    height: 100vh;
+    height: 100%;
   }
 
 /* RESET DE LOS ESTILOS DEFAULT */

@@ -26,7 +26,7 @@ export default {
 
     goTo () {
       this.setIdComunidadEditar(this.info.id_comunidad)
-      this.$router.push(`/ADMIN/${this.loginGlobal}/editarComunidad/${this.info.id_comunidad}`)
+      this.$router.push(`/ADMIN/${this.loginGlobal}/comunidad/${this.info.id_comunidad}`)
     }
   }
 }
@@ -35,7 +35,7 @@ export default {
 <style scoped>
   .container-card{
     height: 200px;
-    width: 60%;
+    width: 50%;
     margin-top: 20px;
     background-color: #E7EFFF;
     border: 1px solid grey;
@@ -43,7 +43,7 @@ export default {
   }
   .container-card:hover{
     height: 200px;
-    width: 62%;
+    width: 52%;
     margin-top: 20px;
     background-color: #E7EFFF;
     border-radius: 15px;
