@@ -6,7 +6,8 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: { // Aquí guardamos todas nuestras variables globales
     idGlobal: '',
-    loginGlobal: ''
+    loginGlobal: '',
+    idComunidadEditar: ''
   },
   getters: { // Son como funciones computadas para tratar las variables del state. NO MODIFICAR SU VALOR. Le tienes que pasar por parametros la variable state
     isLoged (state) {
@@ -19,6 +20,9 @@ export default new Vuex.Store({
     },
     setLogin (state, newLogin) {
       state.loginGlobal = newLogin
+    },
+    setIdComunidadEditar (state, idComunidad) {
+      state.idComunidadEditar = idComunidad
     }
   },
   actions: {

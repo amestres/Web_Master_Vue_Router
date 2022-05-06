@@ -33,7 +33,7 @@ export default {
 
     // Creamos un nuevo div y mostramos la información de cada comunidad devuelta
     if (response.data.data.resultado === 'ok') {
-      this.cantidadComunidades = response.data.data.datos.length // Guardamos el número de registros que nos ha devuelto la consulta
+      this.cantidadComunidades = response.data.data.datos.length // Guardamos el número de registros que nos ha devuelto la consulta para usarlo en el v-for
 
       for (let x = 0; x < response.data.data.datos.length; x++) { // Sabiendo el número máximo de registros, guardamos la info de cada registro en una array
         this.comunidades[x] = response.data.data.datos[x]

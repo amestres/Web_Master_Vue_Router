@@ -2,6 +2,7 @@
   <div class="container-main">
     <MenuAdmin></MenuAdmin>
     <div class="container-formulario">
+      <h1 class="title">Crear Comunidad</h1>
       <form onsubmit="event.preventDefault()" class="container-form">
         <div class="container-separador">
           <label for="nombre" class="label-formulario">Nombre</label>
@@ -14,7 +15,7 @@
 
         <div class="container-separador">
           <label for="codigo_postal" class="label-formulario">Código Postal</label>
-          <input v-model="codigo_postal" type="text" name="codigo_postal" maxlength="5"  id="input-codigoPostal" required>
+          <input v-model="codigo_postal" type="text" name="codigo_postal" maxlength="5" id="input-codigoPostal" required>
         </div>
 
         <div class="container-separador">
@@ -108,6 +109,11 @@ export default {
     align-items: center;
   }
 
+  .title{
+    margin-top: 30px;
+    font-size: 28px;
+  }
+
   .container-form{
     width: 60%;
     margin-top: 20px;
@@ -135,6 +141,7 @@ export default {
     outline: none;
     padding: .25rem .5rem .5rem 0;
     resize: none;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   }
 
   .label-formulario{

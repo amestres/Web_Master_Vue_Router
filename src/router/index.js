@@ -62,7 +62,7 @@ const routes = [
     component: AdminCrearComunidadView
   },
   {
-    path: '/ADMIN/:userLogin/editarComunidad',
+    path: '/ADMIN/:userLogin/editarComunidad/:idComunidad',
     name: 'adminEditarComunidad',
     component: AdminEditarComunidadView
   },

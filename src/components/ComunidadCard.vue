@@ -8,7 +8,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapMutations } from 'vuex'
 
 export default {
   name: 'ComunidadCard',
@@ -22,8 +22,11 @@ export default {
     ...mapState(['loginGlobal'])
   },
   methods: {
+    ...mapMutations(['setIdComunidadEditar']), // LAS MUTACIONES SIEMPRE TIENEN QUE IR EN METHODS
+
     goTo () {
-      this.$router.push(`/ADMIN/${this.loginGlobal}/editarComunidad`)
+      this.setIdComunidadEditar(this.info.id_comunidad)
+      this.$router.push(`/ADMIN/${this.loginGlobal}/editarComunidad/${this.info.id_comunidad}`)
     }
   }
 }

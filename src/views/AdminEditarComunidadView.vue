@@ -2,6 +2,7 @@
   <div class="container-main">
     <MenuAdmin></MenuAdmin>
     <div class="container-formulario">
+      <h1 class="title">Editar comunidad</h1>
       <form onsubmit="event.preventDefault()" class="container-form">
         <div class="container-separador">
           <label for="nombre" class="label-formulario">Nombre</label>
@@ -14,7 +15,7 @@
 
         <div class="container-separador">
           <label for="codigo_postal" class="label-formulario">Código Postal</label>
-          <input v-model="codigoPostal" type="text" name="codigo_postal" maxlength="5" required>
+          <input v-model="codigo_postal" type="text" name="codigo_postal" maxlength="5" id="input-codigoPostal" required>
         </div>
 
         <div class="container-separador">
@@ -22,14 +23,14 @@
           <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" required></textarea>
         </div>
 
-        <input type="submit" class="button" @click="crearUsuario" value="Crear comunidad">
+        <input type="submit" class="button" @click="editarComunidad" value="Editar comunidad">
       </form>
     </div>
   </div>
 </template>
 
 <script>
-// import axios from 'axios'
+import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import { mapState } from 'vuex'
 
@@ -40,17 +41,72 @@ export default {
   },
   data () {
     return {
+      id_comunidad: '',
       nombre: '',
       direccion: '',
-      codigoPostal: '',
+      codigo_postal: '',
       descripcion: ''
     }
   },
+  async mounted () {
+    const response = await axios.post('http://localhost/api/?servicio=obtener_comunidades', {
+      id_comunidad: this.idComunidadEditar
+    })
+
+    if (response.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
+      this.nombre = response.data.data.datos[0].nombre_comunidad
+      this.direccion = response.data.data.datos[0].direccion
+      this.codigo_postal = response.data.data.datos[0].codigo_postal
+      this.descripcion = response.data.data.datos[0].descripcion
+    } else if (response.data.data.resultado === 'sin_resultados') {
+      console.log('No se encuuentra ninguna comunidad con el índice indicado')
+    }
+  },
   computed: {
-    ...mapState(['idGlobal', 'loginGlobal'])
+    ...mapState(['idGlobal', 'loginGlobal', 'idComunidadEditar'])
   },
   methods: {
+    async editarComunidad () {
+      if (this.validarCodigoPostal(this.codigo_postal)) {
+        const response = await axios.post('http://localhost/api/?servicio=modificar_comunidad', {
+          id_comunidad: this.idComunidadEditar,
+          id_administrador: this.idGlobal,
+          nombre: this.nombre,
+          direccion: this.direccion,
+          codigo_postal: this.codigo_postal,
+          descripcion: this.descripcion
+        })
 
+        if (response.data.data.resultado === 'ok') {
+          console.log('Información actualizada')
+          this.resetInputs()
+        } else if (response.data.data.resultado === 'id_comunidad_no_existe') { // Informamos por consola dependiendo del resultado que nos devuelve la llamada
+          console.log('Hay un error con el id de la comunidad')
+        } else if (response.data.data.resultado === 'administrador_no_existe') {
+          console.log('El usuario actual no tiene permisos de edición')
+        } else if (response.data.data.resultado === 'no_es_su_creador') {
+          console.log('El administrador actual no tiene creó la comunidad')
+        }
+      } else {
+        console.log('El código postal no es válido')
+        document.getElementById('input-codigoPostal').focus()
+      }
+    },
+
+    resetInputs () {
+      this.nombre = ''
+      this.direccion = ''
+      this.codigo_postal = ''
+      this.descripcion = ''
+    },
+
+    validarCodigoPostal (codigoPostal) { // Controlamos que el código postal que obtenemos con el input sea válido. Si es válido devolvemos un true.
+      if (codigoPostal.length === 5 && parseInt(codigoPostal) >= 1000 && parseInt(codigoPostal) <= 52999) {
+        return true
+      } else {
+        return false
+      }
+    }
   }
 }
 </script>
@@ -67,6 +123,11 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .title{
+    margin-top: 30px;
+    font-size: 28px;
   }
 
   .container-form{
