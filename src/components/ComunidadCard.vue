@@ -1,13 +1,16 @@
 <template>
-  <div class="container-card" @click="goTo">
+  <div class="container-card" >
     <div class="container-nombre-eliminar">
-      <p>Nombre: {{info.nombre_comunidad}}</p>
+      <div class ="anchura-perfecta" @click="goTo">
+        <p class="nombre">{{info.nombre_comunidad}}</p>
+      </div>
       <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id_comunidad)" style="font-size: 1.5em"></i>
     </div>
-
+    <div class="anchura-perfecta altura-perfecta" @click="goTo">
       <p>Dirección: {{info.direccion}}</p>
       <p>Código postal: {{info.codigo_postal}}</p>
       <p>Descripción: {{info.descripcion}}</p>
+    </div>
   </div>
 </template>
 
@@ -33,6 +36,7 @@ export default {
 
     openAlert (id) {
       localStorage.id_comunidad = id
+      this.$router.push(`/ADMIN/${this.login}/comunidades`)
       this.$confirm('¿Desea eliminar la comunidad?', '', 'question').then(() => {
         this.eliminarComunidad()
       })
@@ -75,6 +79,19 @@ export default {
   .container-nombre-eliminar{
     display: flex;
     justify-content: space-between;
+    margin-bottom: 20px;
+  }
+
+  .anchura-perfecta{
+    width: 99%;
+  }
+
+  .altura-perfecta{
+    height: 85%;
+  }
+
+  .nombre{
+    font-size: 20px;
   }
 
   .icono-eliminar:hover{

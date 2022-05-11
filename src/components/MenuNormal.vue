@@ -53,6 +53,7 @@ export default {
     justify-content: center;
     background-color: #5271ff;
     color: white;
+    font-size: 20px;
   }
 
   .button:hover{
