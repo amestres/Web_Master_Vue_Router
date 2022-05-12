@@ -132,4 +132,21 @@ export default {
   .label-formulario{
     font-size: .813rem;
   }
+
+  /************* Tablet *************/
+  @media (max-width: 1280px) {
+    .container-botones{
+    display: flex;
+    flex-direction: column;
+    }
+
+  }
+
+  /************* Mobile *************/
+  @media (max-width: 767px) {
+    .container-botones{
+    display: flex;
+    flex-direction: column;
+    }
+  }
 </style>

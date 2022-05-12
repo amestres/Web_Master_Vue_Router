@@ -1,15 +1,15 @@
 <template>
   <div class="container-vecino" id="vecinos">
-      <div class="container-login-eliminar container-separador">
-          <p>Login: {{login}}</p>
-          <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)"></i>
-      </div>
-      <div class="container-separador">
-          <p>Nombre: {{nombre}}</p>
-      </div>
-      <div class="container-separador">
-          <p>Apellidos: {{apellidos}}</p>
-      </div>
+    <div class="container-login-eliminar container-separador">
+        <p>Login: {{login}}</p>
+        <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)"></i>
+    </div>
+    <div class="container-separador">
+        <p>Nombre: {{nombre}}</p>
+    </div>
+    <div class="container-separador">
+        <p>Apellidos: {{apellidos}}</p>
+    </div>
   </div>
 </template>
 

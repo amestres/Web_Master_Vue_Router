@@ -112,7 +112,7 @@ export default {
   }
 
   .container-form{
-    width: 60%;
+    width: 40rem;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -120,7 +120,7 @@ export default {
   }
 
   .container-separador{
-    width: 50%;
+    width: 70%;
     margin-top: 10px;
     justify-content: center;
     border-radius: .5rem;

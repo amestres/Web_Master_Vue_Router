@@ -32,6 +32,13 @@
         <VecinoCard v-for="vecino in cantidadVecinos" :key="vecino.id" :info="vecinos[vecino-1]"></VecinoCard>
       </div>
     </div>
+
+    <div class="container-usuarios">
+      <h1 class="title-vecinos">Zonas comunes</h1>
+      <div class="container-lista-zonas">
+        <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,12 +46,14 @@
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import VecinoCard from '../components/VecinoCard.vue'
+import ZonaComunCard from '../components/ZonaComunCard.vue'
 
 export default {
   name: 'AdminEditarComunidadView',
   components: {
     MenuAdmin,
-    VecinoCard
+    VecinoCard,
+    ZonaComunCard
   },
   data () {
     return {
@@ -55,10 +64,13 @@ export default {
       codigo_postal: '',
       descripcion: '',
       vecinos: [],
-      cantidadVecinos: ''
+      cantidadVecinos: '',
+      zonas: [],
+      cantidadZonas: ''
     }
   },
   async mounted () {
+    // Llamada a la api para obtener la info de esa comunidad y mostrarla por pantalla
     const response = await axios.post('http://localhost/api/?servicio=obtener_comunidades', {
       id_comunidad: this.id_comunidad
     })
@@ -78,7 +90,7 @@ export default {
       id_comunidad: this.id_comunidad
     })
 
-    if (responseVecinos.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
+    if (responseVecinos.data.data.resultado === 'ok') {
       this.cantidadVecinos = responseVecinos.data.data.datos.length
 
       for (let x = 0; x < responseVecinos.data.data.datos.length; x++) {
@@ -86,6 +98,21 @@ export default {
       }
     } else if (responseVecinos.data.data.resultado === 'sin_resultados') {
       console.log('Esta comunidad no tiene vecinos')
+    }
+
+    // Llamada a la api para mostrar las zonas comunes que pertenecen a esa comunidad
+    const responseZonasComunes = await axios.post('http://localhost/api/?servicio=obtener_zonas', {
+      id_comunidad: this.id_comunidad
+    })
+
+    if (responseZonasComunes.data.data.resultado === 'ok') {
+      this.cantidadZonas = responseZonasComunes.data.data.datos.length
+
+      for (let x = 0; x < responseZonasComunes.data.data.datos.length; x++) {
+        this.zonas[x] = responseZonasComunes.data.data.datos[x]
+      }
+    } else if (responseZonasComunes.data.data.resultado === 'sin_resultados') {
+      console.log('Esta comunidad no tiene zonas comunes')
     }
   },
   methods: {
@@ -155,7 +182,7 @@ export default {
   }
 
   .container-form{
-    width: 60%;
+    width: 40rem;
     margin-top: 20px;
     display: flex;
     flex-direction: column;
@@ -163,7 +190,7 @@ export default {
   }
 
   .container-separador{
-    width: 50%;
+    width: 70%;
     margin-top: 10px;
     justify-content: center;
     border-radius: .5rem;
@@ -228,4 +255,36 @@ export default {
     padding: .75rem 1rem .25rem;
     overflow-y: auto;
   }
+
+  .container-lista-zonas{
+    width: 90%;
+    height: 50rem;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    display: grid;
+    grid-template-columns: 50% 50%;
+    padding: .75rem ;
+    overflow-y: auto;
+  }
+
+  /************* Tablet *************/
+  @media (max-width: 1280px) {
+
+  }
+
+  /************* Mobile *************/
+  @media (max-width: 767px) {
+    .container-lista-usuarios{
+      width: 20rem;
+    }
+
+    .container-form{
+      width: 100%;
+    }
+
+    .container-separador{
+      width: 80%;
+    }
+  }
+
   </style>

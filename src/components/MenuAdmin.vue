@@ -29,6 +29,7 @@ export default {
 
 <style scoped>
   .container-menu{
+    width: 100%;
     height: 70px;
     display: flex;
     justify-content: center;
