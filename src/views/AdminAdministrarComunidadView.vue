@@ -33,7 +33,7 @@
       </div>
     </div>
 
-    <div class="container-usuarios">
+    <div class="container-zonas">
       <h1 class="title-vecinos">Zonas comunes</h1>
       <div class="container-lista-zonas">
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
@@ -256,12 +256,20 @@ export default {
     overflow-y: auto;
   }
 
+  .container-zonas{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .container-lista-zonas{
     width: 90%;
-    height: 50rem;
+    height: 65rem;
     margin-top: 10px;
     margin-bottom: 20px;
     display: grid;
+    justify-items: center;
     grid-template-columns: 50% 50%;
     padding: .75rem ;
     overflow-y: auto;
@@ -269,7 +277,11 @@ export default {
 
   /************* Tablet *************/
   @media (max-width: 1280px) {
-
+    .container-lista-zonas{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
   }
 
   /************* Mobile *************/
