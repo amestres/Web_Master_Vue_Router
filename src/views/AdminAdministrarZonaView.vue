@@ -17,8 +17,8 @@
         <div class="container-separador">
           <div class="container-radio-buttons">
             <label for="activa" class="label-formulario" id="activo">Activa</label>
-            <input type="radio" name="activa">
-            <input type="radio" name="activa">
+            <input type="radio" name="activa" id="activa">
+            <input type="radio" name="activa" Id="noActiva">
             <label for="activa" class="label-formulario" id="desactivo">Desactivada</label>
           </div>
         </div>
@@ -41,10 +41,10 @@ export default {
   data () {
     return {
       id: '',
+      id_comunidad: '',
       nombre: '',
       descripcion: '',
-      activa: '',
-      noActiva: ''
+      activa: ''
     }
   },
   async mounted () {
@@ -54,14 +54,15 @@ export default {
     })
 
     if (response.data.data.resultado === 'ok') { // Si la consulta a la api nos devuelve un registro, mostramos la información del registro en los inputs
+      this.id_comunidad = response.data.data.datos[0].id_comunidad
       this.nombre = response.data.data.datos[0].nombre
       this.descripcion = response.data.data.datos[0].descripcion
-      if (response.data.data.datos[0].activa === 1) {
-        this.activa = true
-        this.noActiva = false
+      if (response.data.data.datos[0].activa === '1') { // Dependiendo del valor, marcamos como checked un radio button u otro
+        const radioButton = document.getElementById('activa')
+        radioButton.checked = true
       } else {
-        this.noActiva = true
-        this.activa = false
+        const radioButton = document.getElementById('noActiva')
+        radioButton.checked = true
       }
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
@@ -69,23 +70,23 @@ export default {
   },
   methods: {
     async editarZona () {
-      const response = await axios.post('http://localhost/api/?servicio=modificar_comunidad', {
+      const radioButton = document.getElementById('activa')
+      if (radioButton.checked) {
+        this.activa = '1'
+      } else {
+        this.activa = '0'
+      }
+
+      const response = await axios.post('http://localhost/api/?servicio=modificar_zona', {
+        id_zona: localStorage.id_zona,
         id_comunidad: this.id_comunidad,
-        id_administrador: this.id_administrador,
         nombre: this.nombre,
-        direccion: this.direccion,
-        codigo_postal: this.codigo_postal,
-        descripcion: this.descripcion
+        descripcion: this.descripcion,
+        activa: this.activa
       })
 
       if (response.data.data.resultado === 'ok') {
         console.log('Información actualizada')
-      } else if (response.data.data.resultado === 'id_comunidad_no_existe') { // Informamos por consola dependiendo del resultado que nos devuelve la llamada
-        console.log('Hay un error con el id de la comunidad')
-      } else if (response.data.data.resultado === 'administrador_no_existe') {
-        console.log('El usuario actual no tiene permisos de edición')
-      } else if (response.data.data.resultado === 'no_es_su_creador') {
-        console.log('El administrador actual no tiene creó la comunidad')
       }
     }
   }
