@@ -27,9 +27,17 @@
       </form>
     </div>
     <div class="container-usuarios">
-      <h1 class="title-vecinos">Vecinos</h1>
-      <div class="container-lista-usuarios">
-        <VecinoCard v-for="vecino in cantidadVecinos" :key="vecino.id" :info="vecinos[vecino-1]"></VecinoCard>
+      <div class="container-vecinos">
+        <h1 class="title-vecinos">Vecinos</h1>
+        <div class="container-lista-usuarios">
+          <VecinoCard v-for="vecino in cantidadVecinos" :key="vecino.id" :info="vecinos[vecino-1]"></VecinoCard>
+        </div>
+      </div>
+      <div class="container-vecinos">
+        <h1 class="title-vecinos">Usuarios</h1>
+        <div class="container-lista-usuarios">
+          <UsuarioCard v-for="usuario in usuarios.length" :key="usuario.id" :info="usuarios[usuario-1]"></UsuarioCard>
+        </div>
       </div>
     </div>
 
@@ -46,6 +54,7 @@
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import VecinoCard from '../components/VecinoCard.vue'
+import UsuarioCard from '../components/UsuarioCard.vue'
 import ZonaComunCard from '../components/ZonaComunCard.vue'
 
 export default {
@@ -53,6 +62,7 @@ export default {
   components: {
     MenuAdmin,
     VecinoCard,
+    UsuarioCard,
     ZonaComunCard
   },
   data () {
@@ -65,6 +75,8 @@ export default {
       descripcion: '',
       vecinos: [],
       cantidadVecinos: '',
+      usuarios: [],
+      cantidadUsuarios: '',
       zonas: [],
       cantidadZonas: ''
     }
@@ -98,6 +110,32 @@ export default {
       }
     } else if (responseVecinos.data.data.resultado === 'sin_resultados') {
       console.log('Esta comunidad no tiene vecinos')
+    }
+
+    // Llamada a la api para mostrar todos los usuarios registrados y dar la opción de añadirlo a la comunidad
+    const responseUsuarios = await axios.post('http://localhost/api/?servicio=obtener_usuarios', {
+      id_rol: '1'
+    })
+
+    if (responseUsuarios.data.data.resultado === 'ok') {
+      let posicion = 0
+
+      for (let x = 0; x < responseUsuarios.data.data.datos.length; x++) { // bucla para recorrer los registros que nos devuelve la api
+        let yaPertecene = false
+
+        for (let y = 0; y < this.vecinos.length; y++) { // buscle para recorrer la array de vecinos y comparar el registro actual de la api
+          if (this.vecinos[y].id_usuario === responseUsuarios.data.data.datos[x].id_usuario) {
+            yaPertecene = true
+          }
+        }
+
+        if (yaPertecene === false) { // Si al salir del bucle sale la variable yaPertenece sigue siendo false quiere decir que ese usuario no peretenece a la comunidad
+          this.usuarios[posicion] = responseUsuarios.data.data.datos[x]
+          posicion = posicion + 1
+        }
+      }
+    } else if (responseUsuarios.data.data.resultado === 'sin_resultados') {
+      console.log('No existen usuarios')
     }
 
     // Llamada a la api para mostrar las zonas comunes que pertenecen a esa comunidad
@@ -231,6 +269,10 @@ export default {
   }
 
   .container-usuarios{
+    display: flex;
+  }
+
+  .container-vecinos{
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -282,6 +324,11 @@ export default {
       flex-direction: column;
       align-items: center;
     }
+
+    .container-lista-usuarios{
+      width: 20rem;
+    }
+
   }
 
   /************* Mobile *************/
@@ -296,6 +343,10 @@ export default {
 
     .container-separador{
       width: 80%;
+    }
+
+    .container-lista-usuarios{
+      width: 14rem;
     }
   }
 

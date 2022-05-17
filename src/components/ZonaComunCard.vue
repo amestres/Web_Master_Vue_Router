@@ -66,6 +66,10 @@ export default {
     margin-top: 20px;
   }
 
+  .container-zona:hover{
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
   .container-login-eliminar{
     display: flex;
     justify-content: space-between;
