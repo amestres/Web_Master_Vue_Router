@@ -44,6 +44,23 @@
     <div class="container-zonas">
       <h1 class="title-vecinos">Zonas comunes</h1>
       <div class="container-lista-zonas">
+        <form onsubmit="event.preventDefault()" class="container-crear-zona">
+          <div class="container-separador-crearZona">
+            <label for="nombreZona">Nombre: </label>
+            <input v-model="nombreZonaNueva" type="text" name="nombreZona" placeholder="Nombre zona común" required>
+          </div>
+          <div class="container-separador-crearZona-2">
+            <label for="descripcionZona">Descripción: </label>
+            <textarea v-model="descripcionZonaNueva" cols="0" rows="7" type="text" name="descripcionZona" required></textarea>
+          </div>
+          <div class="container-radio-buttons">
+            <label for="zonaActiva" id="activo">Activa</label>
+            <input type="radio" name="zonaActiva" id="activa" checked>
+            <input type="radio" name="zonaActiva" id="noActiva">
+            <label for="zonaActiva" id="desactivo">Desactivada</label>
+            <input type="submit" value="Crear zona" @click="crearZona">
+          </div>
+        </form>
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
       </div>
     </div>
@@ -78,7 +95,11 @@ export default {
       usuarios: [],
       cantidadUsuarios: '',
       zonas: [],
-      cantidadZonas: ''
+      cantidadZonas: '',
+      nombreZonaNueva: '',
+      descripcionZonaNueva: '',
+      zonaActiva: ''
+
     }
   },
   async mounted () {
@@ -179,6 +200,37 @@ export default {
         console.log('El código postal no es válido')
         document.getElementById('input-codigoPostal').focus()
       }
+    },
+
+    async crearZona () {
+      const radioButton = document.getElementById('activa')
+      if (radioButton.checked) {
+        this.zonaActiva = '1'
+      } else {
+        this.zonaActiva = '0'
+      }
+
+      const response = await axios.post('http://localhost/api/?servicio=alta_zona', {
+        id_comunidad: this.id_comunidad,
+        nombre: this.nombreZonaNueva,
+        descripcion: this.descripcionZonaNueva,
+        activa: this.zonaActiva
+      })
+
+      if (response.data.data.resultado === 'ok') {
+        console.log('Zona común creada')
+        this.resetInputs()
+        this.$router.go()
+      } else {
+        if (response.data.data.resultado === 'administrador_no_existe') {
+          console.log('No existe un administrador con ese id')
+        }
+      }
+    },
+
+    resetInputs () { // Cuando creamos una comunidad nueva, al finalizar el proceso limpiamos los imputs para que el administrador pueda crear una nueva.
+      this.nombreZonaNueva = ''
+      this.descripcionZonaNueva = ''
     },
 
     validarCodigoPostal (codigoPostal) { // Controlamos que el código postal que obtenemos con el input sea válido. Si es válido devolvemos un true.
@@ -317,6 +369,34 @@ export default {
     overflow-y: auto;
   }
 
+  .container-crear-zona{
+    height: 300px;
+    width: 34rem;
+    padding: 10px;
+    background-color: #E7EFFF;
+    border: 1px solid grey;
+    border-radius: 15px;
+    margin-top: 20px;
+  }
+
+  .container-separador-crearZona{
+    display: flex;
+    font-size: 20px;
+  }
+
+  .container-separador-crearZona-2{
+    font-size: 20px;
+  }
+
+  .container-radio-buttons{
+    display: flex;
+    flex-direction: row;
+  }
+
+  .container-radioButton{
+    width: 50%;
+  }
+
   /************* Tablet *************/
   @media (max-width: 1280px) {
     .container-lista-zonas{
@@ -327,6 +407,10 @@ export default {
 
     .container-lista-usuarios{
       width: 20rem;
+    }
+
+    .container-crear-zona{
+      margin-bottom: 20px;
     }
 
   }
@@ -347,6 +431,10 @@ export default {
 
     .container-lista-usuarios{
       width: 14rem;
+    }
+
+    .container-crear-zona{
+      width: 18rem;
     }
   }
 
