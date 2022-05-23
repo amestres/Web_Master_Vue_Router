@@ -26,6 +26,7 @@
         <input type="submit" class="button" @click="editarComunidad" value="Guardar cambios">
       </form>
     </div>
+
     <div class="container-usuarios">
       <div class="container-vecinos">
         <h1 class="title-vecinos">Vecinos</h1>
@@ -36,13 +37,13 @@
       <div class="container-vecinos">
         <h1 class="title-vecinos">Usuarios</h1>
         <div class="container-lista-usuarios">
-          <UsuarioCard v-for="usuario in usuarios.length" :key="usuario.id" :info="usuarios[usuario-1]"></UsuarioCard>
+          <UsuarioCard v-for="usuario in cantidadUsuarios" :key="usuario.id" :info="usuarios[usuario-1]"></UsuarioCard>
         </div>
       </div>
     </div>
 
     <div class="container-zonas">
-      <h1 class="title-vecinos">Zonas comunes</h1>
+      <h1 class="title">Zonas comunes</h1>
       <div class="container-lista-zonas">
         <form onsubmit="event.preventDefault()" class="container-crear-zona">
           <div class="container-separador-crearZona">
@@ -66,6 +67,7 @@
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
       </div>
     </div>
+
   </div>
 </template>
 
@@ -157,6 +159,7 @@ export default {
           posicion = posicion + 1
         }
       }
+      this.cantidadUsuarios = responseUsuarios.data.data.datos.length - (responseUsuarios.data.data.datos.length - posicion) // Cálculo para extraer cuantas card mostrar
     } else if (responseUsuarios.data.data.resultado === 'sin_resultados') {
       console.log('No existen usuarios')
     }
@@ -173,7 +176,7 @@ export default {
         this.zonas[x] = responseZonasComunes.data.data.datos[x]
       }
     } else if (responseZonasComunes.data.data.resultado === 'sin_resultados') {
-      console.log('Esta comunidad no tiene zonas comunes')
+      // console.log('Esta comunidad no tiene zonas comunes')
     }
   },
   methods: {

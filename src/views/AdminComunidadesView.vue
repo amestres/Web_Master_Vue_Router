@@ -47,9 +47,6 @@ export default {
         console.log('Este administrador no tiene ningúna comunidad creada')
       }
     }
-  },
-  methods: {
-
   }
 }
 </script>

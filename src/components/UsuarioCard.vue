@@ -38,22 +38,21 @@ export default {
       this.apellidos = responseUsuario.data.data.datos[0].apellidos
       this.id_usuario = responseUsuario.data.data.datos[0].id_usuario
     } else if (responseUsuario.data.data.resultado === 'sin_resultados') {
-      console.log('Estae usuario no existe')
+      console.log('Este usuario no existe')
     }
   },
   methods: {
 
     openAlert (id) {
-      this.id_usuario = id
       this.$confirm('¿Desea añadir este usuario a la comunidad?', '', 'question').then(() => {
-        this.crearAsignacion(this.id_usuario)
+        this.crearAsignacion(id)
       })
     },
 
     async crearAsignacion (id) { // creamos un registro en la tabla comunidad_usuario que es la que vincula una comunidad ocn un usuario (vecino)
       const response = await axios.post('http://localhost/api/?servicio=alta_asignacion', {
         id_comunidad: localStorage.id_comunidad,
-        id_usuario: this.id_usuario
+        id_usuario: id
       })
 
       if (response.data.data.resultado === 'ok') {
