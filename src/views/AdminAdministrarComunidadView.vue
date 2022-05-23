@@ -58,7 +58,9 @@
             <input type="radio" name="zonaActiva" id="activa" checked>
             <input type="radio" name="zonaActiva" id="noActiva">
             <label for="zonaActiva" id="desactivo">Desactivada</label>
-            <input type="submit" value="Crear zona" @click="crearZona">
+          </div>
+          <div class="container-separador-boton">
+            <input type="submit" value="Crear zona" class="boton-crear-zona" @click="crearZona">
           </div>
         </form>
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
@@ -298,6 +300,7 @@ export default {
     outline: none;
     padding: .25rem .5rem .5rem 0;
     resize: none;
+    font-family: Avenir, Helvetica, Arial, sans-serif;
   }
 
   .label-formulario{
@@ -395,6 +398,25 @@ export default {
 
   .container-radioButton{
     width: 50%;
+  }
+
+  .container-separador-boton{
+    margin-top: 28px;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  .boton-crear-zona{
+    width: 8rem;
+    border: 0.1px solid black;
+    border-radius: 20px;
+    background-color: rgb(13, 108, 252);
+    color: white;
+  }
+
+  .boton-crear-zona:hover{
+    background-color: #3246fc;
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 
   /************* Tablet *************/
