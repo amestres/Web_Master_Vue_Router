@@ -34,8 +34,6 @@ export default {
     })
 
     if (response.data.data.resultado === 'ok') {
-      this.cantidadComunidades = response.data.data.datos.length // Miramos a cuantas comunidades pertenece ese usuario
-
       for (let x = 0; x < response.data.data.datos.length; x++) { // Por cada comunidad hacemos una llamada a la api pasando el id de esa comunidad para así extraer su información
         const responseComunidad = await axios.post('http://localhost/api/?servicio=obtener_comunidades', {
           id_comunidad: response.data.data.datos[x].id_comunidad // Este id lo conseguimos en la conulta anterior
@@ -48,6 +46,8 @@ export default {
         }
       }
       console.log(this.comunidades)
+      console.log(this.comunidades.length)
+      this.cantidadComunidades = response.data.data.datos.length // Miramos a cuantas comunidades pertenece ese usuario
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('Este usuario no tiene ninguna comunidad creada')
     }

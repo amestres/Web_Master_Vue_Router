@@ -64,7 +64,7 @@
             <input type="submit" value="Crear zona" class="boton-crear-zona" @click="crearZona">
           </div>
         </form>
-        <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
+        <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]" tipo="admin"></ZonaComunCard>
       </div>
     </div>
 

@@ -29,14 +29,13 @@ export default {
   methods: {
 
     goTo () {
-      localStorage.id_comunidad = this.info.id_comunidad // Guardamos el login y el id del usuario en el storage
+      localStorage.id_comunidad = this.info.id_comunidad // Guardamos el id de la comunidad que vamos a administrar
 
       this.$router.push(`/ADMIN/${this.login}/comunidad/${this.info.id_comunidad}`)
     },
 
     openAlert (id) {
       localStorage.id_comunidad = id
-      this.$router.push(`/ADMIN/${this.login}/comunidades`)
       this.$confirm('¿Desea eliminar la comunidad?', '', 'question').then(() => {
         this.eliminarComunidad()
       })

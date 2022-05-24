@@ -1,14 +1,14 @@
 <template>
-  <div class="container-card" >
+  <div class="container-card" @click="goTo">
     <div class="container-nombre-eliminar">
       <div class ="anchura-perfecta" >
-        <p class="nombre">{{info.id_comunidad}}</p>
+        <p class="nombre">{{info.nombre_comunidad}}</p>
       </div>
     </div>
     <div class="anchura-perfecta altura-perfecta" >
-      <p>Descripción: </p>
-      <p>Código postal: </p>
-      <p>Descripción: </p>
+      <p>Descripción: {{info.direccion}}</p>
+      <p>Código postal: {{info.codigo_postal}}</p>
+      <p>Descripción: {{info.descripcion}}</p>
     </div>
   </div>
 </template>
@@ -22,7 +22,24 @@ export default {
       login: localStorage.login
     }
   },
-  props: ['info']
+  props: {
+    info: {
+      id_comunidad: String,
+      nombre_comunidad: String,
+      id_administrador: String,
+      nombre_administrador: String,
+      direccion: String,
+      codigo_postal: String,
+      descripcion: String
+    }
+  },
+  methods: {
+    goTo () {
+      localStorage.id_comunidad = this.info.id_comunidad // Guardamos el id de la comunidad que vamos a visitar
+
+      this.$router.push(`/${this.login}/comunidad/${this.info.id_comunidad}`)
+    }
+  }
 }
 </script>
 

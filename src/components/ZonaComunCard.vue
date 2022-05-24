@@ -1,13 +1,21 @@
 <template>
   <div class="container-zona">
-    <div class="container-login-eliminar container-separador">
-      <div class="anchura-perfecta" @click="goTo">
-        <p class="title-zona">{{info.nombre}}</p>
+    <div v-if="tipo === 'admin'" class="container-zona-info" >
+      <div class="container-login-eliminar container-separador">
+        <div class="anchura-perfecta" @click="goTo('admin')">
+          <p class="title-zona">{{info.nombre}}</p>
+        </div>
+        <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)"></i>
       </div>
-      <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)"></i>
+      <div class="anchura-perfecta container-separador altura-perfecta" @click="goTo('admin')">
+          <p>{{info.descripcion}}</p>
+      </div>
     </div>
-    <div class="anchura-perfecta container-separador altura-perfecta" @click="goTo">
+    <div v-else class="container-zona-info" @click="goTo('normal')">
+      <div class="anchura-perfecta">
+        <p class="title-zona">{{info.nombre}}</p>
         <p>{{info.descripcion}}</p>
+      </div>
     </div>
   </div>
 </template>
@@ -25,11 +33,16 @@ export default {
       activa: ''
     }
   },
-  props: ['info'],
+  props: ['info', 'tipo'],
   methods: {
-    goTo () {
-      localStorage.id_zona = this.info.id
-      this.$router.push(`/ADMIN/${localStorage.login}/zona/${localStorage.id_zona}`)
+    goTo (user) {
+      if (user === 'admin') {
+        localStorage.id_zona = this.info.id
+        this.$router.push(`/ADMIN/${localStorage.login}/zona/${localStorage.id_zona}`)
+      } else if (user === 'normal') {
+        localStorage.id_zona = this.info.id
+        this.$router.push(`/${localStorage.login}/zona/${localStorage.id_zona}`)
+      }
     },
 
     openAlert (id) {
@@ -93,6 +106,10 @@ export default {
 
   .altura-perfecta{
     height: 85%;
+  }
+  .container-zona-info{
+    width: 100%;
+    height: 100%;
   }
 
   /************* Tablet *************/

@@ -8,6 +8,8 @@ import ErrorView from '../views/ErrorView.vue'
 import ComunidadesView from '../views/ComunidadesView.vue'
 import ReservasView from '../views/ReservasView.vue'
 import PerfilView from '../views/PerfilView.vue'
+import InfoComunidadView from '../views/InfoComunidadView.vue'
+import InfoZonaView from '../views/InfoZonaView.vue'
 
 import AdminComunidadesView from '../views/AdminComunidadesView.vue'
 import AdminCrearComunidadView from '../views/AdminCrearComunidadView.vue'
@@ -48,6 +50,16 @@ const routes = [
     path: '/:userLogin/perfil',
     name: 'perfil',
     component: PerfilView
+  },
+  {
+    path: '/:userLogin/comunidad/:idComunidad',
+    name: 'infoComunidad',
+    component: InfoComunidadView
+  },
+  {
+    path: '/:userLogin/zona/:idZona',
+    name: 'infoZonaView',
+    component: InfoZonaView
   },
 
   // USUARIO ADMIN
