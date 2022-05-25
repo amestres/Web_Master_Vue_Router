@@ -36,15 +36,14 @@ export default {
       fechaFin: ''
     }
   },
-  watch: {
-    // whenever question changes, this function will run
-    fechaInicio (newQuestion, oldQuestion) {
-      if (newQuestion !== oldQuestion) {
-        console.log('hola')
-      }
-    }
-  },
   async mounted () {
+    const fechaActual = new Date()
+    fechaActual.setMinutes(fechaActual.getMinutes() - fechaActual.getTimezoneOffset())
+    this.fechaInicio = fechaActual.toISOString().slice(0, 16) // muestra la fecha actual en el primer input
+
+    fechaActual.setMinutes(fechaActual.getMinutes() + 60)
+    this.fechaFin = fechaActual.toISOString().slice(0, 16) // muestra la fecha actual + 1h en el primer input
+
     // Llamada a la api para obtener la info de esa comunidad y mostrarla por pantalla
     const response = await axios.post('http://localhost/api/?servicio=obtener_zonas', {
       id_zona: localStorage.id_zona
@@ -60,6 +59,8 @@ export default {
   },
   methods: {
     async crearReserva () {
+      console.log(this.fechaInicio) // esto me muestra el valor inicial del input y no el actual
+      console.log(this.fechaFin) // esto me muestra el valor inicial del input y no el actual
       if (this.validarFechas(this.fechaInicio, this.fechaFin)) {
         const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
           id_zona: localStorage.id_zona,
@@ -77,9 +78,17 @@ export default {
           }
         }
       } else {
-        console.log('El código postal no es válido')
-        document.getElementById('input-codigoPostal').focus()
+        console.log('Las fechas nos son válidas')
       }
+    },
+    validarFechas (inicio, fin) {
+      const fechaActual = new Date()
+      fechaActual.setMinutes(fechaActual.getMinutes() - fechaActual.getTimezoneOffset())
+      const fechaBuena = fechaActual.toISOString().slice(0, 16)
+      console.log(fechaBuena)
+      console.log(inicio)
+      // console.log(fin)
+      return false
     }
   }
 }

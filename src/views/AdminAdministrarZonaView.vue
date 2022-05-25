@@ -1,7 +1,7 @@
 <template>
   <div class="container-main">
     <MenuAdmin></MenuAdmin>
-    <div class="container-formulario">
+    <div class="container">
       <h1 class="title">Administrar zona común</h1>
       <form onsubmit="event.preventDefault()" class="container-form">
         <div class="container-separador">
@@ -26,17 +26,25 @@
         <input type="submit" class="button" @click="editarZona" value="Guardar cambios">
       </form>
     </div>
+    <div class="container">
+      <h3 class="subtitle">Reservas</h3>
+      <div class="container-reservas">
+        <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]"></ReservaCard>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
+import ReservaCard from '../components/ReservaCard.vue'
 
 export default {
   name: 'AdminEditarZonaView',
   components: {
-    MenuAdmin
+    MenuAdmin,
+    ReservaCard
   },
   data () {
     return {
@@ -44,7 +52,9 @@ export default {
       id_comunidad: '',
       nombre: '',
       descripcion: '',
-      activa: ''
+      activa: '',
+      reservas: [],
+      cantidadReservas: ''
     }
   },
   async mounted () {
@@ -66,6 +76,21 @@ export default {
       }
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
+    }
+
+    // Llamada a la api para obtener todas las reservas de esa zona común
+    const responseReservas = await axios.post('http://localhost/api/?servicio=obtener_reservas', {
+      id_zona: localStorage.id_zona
+    })
+
+    if (responseReservas.data.data.resultado === 'ok') {
+      for (let x = 0; x < responseReservas.data.data.datos.length; x++) {
+        this.reservas[x] = responseReservas.data.data.datos[x]
+      }
+
+      this.cantidadReservas = responseReservas.data.data.datos.length
+    } else if (responseReservas.data.data.resultado === 'sin_resultados') {
+      console.log('No se encuentra ninguna reserva')
     }
   },
   methods: {
@@ -99,7 +124,7 @@ export default {
     width: 100%;
   }
 
-  .container-formulario{
+  .container{
     height: 92%;
     width: 100%;
     display: flex;
@@ -110,6 +135,11 @@ export default {
   .title{
     margin-top: 30px;
     font-size: 28px;
+  }
+
+  .subtitle{
+    margin-top: 30px;
+    font-size: 22px;
   }
 
   .container-form{
@@ -165,48 +195,16 @@ export default {
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 
-  .container-usuarios{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .title-vecinos{
-    margin-top: 80px;
-    font-size: 28px;
-  }
-
-  .container-lista-usuarios{
-    width: 30rem;
-    height: 30rem;
-    margin-top: 10px;
+  .container-reservas{
+    width: 50%;
+    height: 40rem;
+    margin-top: 20px;
     margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
-    border: 1px solid grey;
+    border: 1px solid black;
     border-radius: .5rem;
-    padding: .75rem 1rem .25rem;
-    overflow-y: auto;
-  }
-
-  .container-zonas{
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .container-lista-zonas{
-    width: 90%;
-    height: 65rem;
-    margin-top: 10px;
-    margin-bottom: 20px;
-    display: grid;
-    justify-items: center;
-    grid-template-columns: 50% 50%;
-    padding: .75rem ;
     overflow-y: auto;
   }
 
@@ -216,6 +214,9 @@ export default {
       display: flex;
       flex-direction: column;
       align-items: center;
+    }
+    .container-reservas{
+      width: 80%;
     }
   }
 
