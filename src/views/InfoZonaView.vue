@@ -7,10 +7,11 @@
         <div class="container-separador">
           <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" readonly="readonly"></textarea>
         </div>
-        <div class="container-separador">
+        <form onsubmit="event.preventDefault()" class="container-separador">
           <input type="datetime-local" :value="fechaInicio" name="fechaInicio">
           <input type="datetime-local" :value="fechaFin" name="fechaFin">
-        </div>
+          <input type="submit" class="button" @click="crearReserva" value="Reservar">
+        </form>
       </div>
     </div>
   </div>
@@ -27,7 +28,7 @@ export default {
   },
   data () {
     return {
-      id: '',
+      id_usuario: localStorage.id_usuario,
       id_comunidad: '',
       nombre: '',
       descripcion: '',
@@ -55,6 +56,30 @@ export default {
       this.descripcion = response.data.data.datos[0].descripcion
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
+    }
+  },
+  methods: {
+    async crearReserva () {
+      if (this.validarFechas(this.fechaInicio, this.fechaFin)) {
+        const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
+          id_zona: localStorage.id_zona,
+          id_usuario: this.id_usuario,
+          fecha_inicio: this.fechaInicio,
+          fecha_fin: this.fechaFin
+        })
+
+        // Mostramos por consola que mensaje nos ha devuelto la api
+        if (response.data.data.resultado === 'ok') {
+          console.log('Reserva creada')
+        } else {
+          if (response.data.data.resultado === 'zona_no_activa') {
+            console.log('La zona común no está activa')
+          }
+        }
+      } else {
+        console.log('El código postal no es válido')
+        document.getElementById('input-codigoPostal').focus()
+      }
     }
   }
 }

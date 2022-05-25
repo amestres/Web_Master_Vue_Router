@@ -69,13 +69,18 @@ export default {
     })
 
     if (responseZonasComunes.data.data.resultado === 'ok') {
-      this.cantidadZonas = responseZonasComunes.data.data.datos.length
+      let posicion = 0
 
       for (let x = 0; x < responseZonasComunes.data.data.datos.length; x++) {
-        this.zonas[x] = responseZonasComunes.data.data.datos[x]
+        if (responseZonasComunes.data.data.datos[x].activa === '1') { // Controlamos que las zonas que se muestren están activas
+          this.zonas[posicion] = responseZonasComunes.data.data.datos[x]
+          posicion = posicion + 1
+        }
       }
+
+      this.cantidadZonas = responseZonasComunes.data.data.datos.length
     } else if (responseZonasComunes.data.data.resultado === 'sin_resultados') {
-      // console.log('Esta comunidad no tiene zonas comunes')
+      console.log('Esta comunidad no tiene zonas comunes')
     }
   },
   methods: {
