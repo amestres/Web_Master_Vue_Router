@@ -78,7 +78,7 @@ export default {
         }
       }
 
-      this.cantidadZonas = responseZonasComunes.data.data.datos.length
+      this.cantidadZonas = responseZonasComunes.data.data.datos.length - (responseZonasComunes.data.data.datos.length - posicion)
     } else if (responseZonasComunes.data.data.resultado === 'sin_resultados') {
       console.log('Esta comunidad no tiene zonas comunes')
     }

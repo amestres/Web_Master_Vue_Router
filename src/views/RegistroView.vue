@@ -63,8 +63,10 @@ export default {
       if (response.data.data.resultado === 'ok') {
         console.log('Usuario registrado')
 
-        localStorage.login = response.data.data.login // Guardamos el login y el id del usuario en el storage GLOBAL
+        localStorage.login = this.formData.login // Guardamos el login y el id del usuario en el storage GLOBAL
+        console.log(localStorage.login)
         localStorage.id_usuario = response.data.data.id
+        console.log(localStorage.id_usuario)
 
         this.$router.push(`/${localStorage.login}/comunidades`)
         this.resetInputs()

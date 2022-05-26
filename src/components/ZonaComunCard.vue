@@ -27,13 +27,19 @@ export default {
   name: 'ZonaComunCard',
   data () {
     return {
-      id: '',
-      nombre: '',
-      descripcion: '',
       activa: ''
     }
   },
-  props: ['info', 'tipo'],
+  props: {
+    info: {
+      id: String,
+      id_comunidad: String,
+      nombre: String,
+      descripcion: String,
+      activa: String
+    },
+    tipo: String
+  },
   methods: {
     goTo (user) {
       if (user === 'admin') {
