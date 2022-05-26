@@ -1,15 +1,26 @@
 <template>
   <div class="reserva-card" >
-    <div class="container-nombre-eliminar">
-      <div class ="anchura-perfecta" >
-        <p>{{nombre_usuario}}  {{apellidos_usuario}}</p>
+    <div v-if="tipo === 'admin'">
+      <div class="container-nombre-eliminar">
+        <div class ="anchura-perfecta" >
+          <p>{{nombre_usuario}}  {{apellidos_usuario}}</p>
+        </div>
+        <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)" style="font-size: 1.5em"></i>
       </div>
-      <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id)" style="font-size: 1.5em"></i>
+      <div class="anchura-perfecta altura-perfecta" >
+        <p>Inicio: {{fechaInicioFormated}}</p>
+        <p>Fin: {{fechaFinFormated}}</p>
+      </div>
     </div>
-    <div class="anchura-perfecta altura-perfecta" >
-      <p>Inicio: {{fechaInicioFormated}}</p>
-      <p>Fin: {{fechaFinFormated}}</p>
+
+    <div v-else>
+      <div class="anchura-perfecta altura-perfecta" >
+        <p>Zona común: {{nombreZona}}</p>
+        <p>Inicio: {{fechaInicioFormated}}</p>
+        <p>Fin: {{fechaFinFormated}}</p>
+      </div>
     </div>
+
   </div>
 </template>
 
@@ -25,7 +36,8 @@ export default {
       nombre_usuario: '',
       apellidos_usuario: '',
       fechaInicioFormated: '',
-      fechaFinFormated: ''
+      fechaFinFormated: '',
+      nombreZona: ''
     }
   },
   props: {
@@ -35,7 +47,8 @@ export default {
       id_zona: String,
       fecha_inicio: String,
       fecha_fin: String
-    }
+    },
+    tipo: String
   },
   async mounted () {
     const response = await axios.post('http://localhost/api/?servicio=obtener_usuarios', {
@@ -63,6 +76,16 @@ export default {
 
     this.fechaInicioFormated = diaInicio + '/' + mesInicio + '/' + anyoInicio + ' ' + horaInicio + ':' + minutoInicio
     this.fechaFinFormated = diaFin + '/' + mesFin + '/' + anyoFin + ' ' + horaFin + ':' + minutoFin
+
+    const responseZona = await axios.post('http://localhost/api/?servicio=obtener_zonas', {
+      id_zona: this.info.id_zona
+    })
+
+    if (responseZona.data.data.resultado === 'ok') {
+      this.nombreZona = responseZona.data.data.datos[0].nombre
+    } else if (responseZona.data.data.resultado === 'sin_resultados') {
+      console.log('No existe ningún usuario con ese id')
+    }
   },
   methods: {
     openAlert (id) {

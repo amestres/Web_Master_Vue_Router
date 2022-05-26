@@ -29,7 +29,7 @@
     <div class="container">
       <h3 class="subtitle">Reservas</h3>
       <div class="container-reservas">
-        <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]"></ReservaCard>
+        <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]" tipo="admin"></ReservaCard>
       </div>
     </div>
   </div>

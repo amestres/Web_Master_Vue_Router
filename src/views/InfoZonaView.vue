@@ -8,8 +8,8 @@
           <textarea v-model="descripcion" cols="0" rows="7" type="text" name="descripcion" readonly="readonly"></textarea>
         </div>
         <form onsubmit="event.preventDefault()" class="container-separador">
-          <input type="datetime-local" :value="fechaInicio" name="fechaInicio">
-          <input type="datetime-local" :value="fechaFin" name="fechaFin">
+          <input type="datetime-local" v-model="fechaInicio" name="fechaInicio">
+          <input type="datetime-local" v-model="fechaFin" name="fechaFin">
           <input type="submit" class="button" @click="crearReserva" value="Reservar">
         </form>
       </div>
@@ -33,7 +33,8 @@ export default {
       nombre: '',
       descripcion: '',
       fechaInicio: '',
-      fechaFin: ''
+      fechaFin: '',
+      resultado: ''
     }
   },
   async mounted () {
@@ -59,23 +60,25 @@ export default {
   },
   methods: {
     async crearReserva () {
-      console.log(this.fechaInicio) // esto me muestra el valor inicial del input y no el actual
-      console.log(this.fechaFin) // esto me muestra el valor inicial del input y no el actual
       if (this.validarFechas(this.fechaInicio, this.fechaFin)) {
-        const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
-          id_zona: localStorage.id_zona,
-          id_usuario: this.id_usuario,
-          fecha_inicio: this.fechaInicio,
-          fecha_fin: this.fechaFin
-        })
+        if (this.validarReserva(this.fechaInicio, this.fechaFin)) {
+          const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
+            id_zona: localStorage.id_zona,
+            id_usuario: this.id_usuario,
+            fecha_inicio: this.fechaInicio,
+            fecha_fin: this.fechaFin
+          })
 
-        // Mostramos por consola que mensaje nos ha devuelto la api
-        if (response.data.data.resultado === 'ok') {
-          console.log('Reserva creada')
-        } else {
-          if (response.data.data.resultado === 'zona_no_activa') {
-            console.log('La zona común no está activa')
+          // Mostramos por consola que mensaje nos ha devuelto la api
+          if (response.data.data.resultado === 'ok') {
+            console.log('Reserva creada')
+          } else {
+            if (response.data.data.resultado === 'zona_no_activa') {
+              console.log('La zona común no está activa')
+            }
           }
+        } else {
+          console.log('No se puede reservar en esta franja horaria')
         }
       } else {
         console.log('Las fechas nos son válidas')
@@ -85,10 +88,63 @@ export default {
       const fechaActual = new Date()
       fechaActual.setMinutes(fechaActual.getMinutes() - fechaActual.getTimezoneOffset())
       const fechaBuena = fechaActual.toISOString().slice(0, 16)
-      console.log(fechaBuena)
-      console.log(inicio)
-      // console.log(fin)
+      if (fechaBuena <= inicio) {
+        if (inicio < fin) {
+          return true
+        }
+      }
       return false
+    },
+    async validarReserva (inicio, fin) {
+      const response = await axios.post('http://localhost/api/?servicio=obtener_reservas', { // Buscamos todas las reservas de esa zona
+        id_zona: localStorage.id_zona
+      })
+
+      if (response.data.data.resultado === 'ok') {
+        for (let x = 0; x < response.data.data.datos.length; x++) {
+          const fechaInicioRegistro = response.data.data.datos[x].fecha_inicio.substr(0, 16) // fecha inicio del registro en formato 2022-05-26 11:24:40
+          const fechaFinRegistro = response.data.data.datos[x].fecha_fin.substr(0, 16) // fecha inicio del fin en formato 2022-05-26 11:24:40
+
+          const anyoInicio = inicio.substr(0, 4) // Me guardo el año del inicio de la reserva
+          const mesInicio = inicio.substr(5, 2) // Me guardo el mes del inicio de la reserva
+          const diaInicio = inicio.substr(8, 2) // Me guardo el día del inicio de la reserva
+          const horaInicio = inicio.substr(11, 2) // Me guardo la hora del inicio de la reserva
+          const minutoInicio = inicio.substr(14, 2) // Me guardo los minutos del inicio de la reserva
+
+          const anyoFin = fin.substr(0, 4) // Me guardo el año del final de la reserva
+          const mesFin = fin.substr(5, 2) // Me guardo el mes del final de la reserva
+          const diaFin = fin.substr(8, 2) // Me guardo el día del final de la reserva
+          const horaFin = fin.substr(11, 2) // Me guardo la hora del final de la reserva
+          const minutoFin = fin.substr(14, 2) // Me guardo los minutos del final de la reserva
+
+          const fechaInicioFormulario = anyoInicio + '-' + mesInicio + '-' + diaInicio + ' ' + horaInicio + ':' + minutoInicio
+          const fechaFinFormulario = anyoFin + '-' + mesFin + '-' + diaFin + ' ' + horaFin + ':' + minutoFin
+
+          // console.log('Fecha inicio formulario: ' + fechaInicioFormulario)
+          // console.log('Fecha fin formulario: ' + fechaFinFormulario)
+
+          // console.log('Fecha inicio registro: ' + fechaInicioRegistro)
+          // console.log('Fecha fin registro: ' + fechaFinRegistro)
+
+          if (fechaInicioRegistro <= fechaInicioFormulario && fechaInicioFormulario <= fechaFinRegistro) { // Si la fecha inicial se encuentra entre las fechas del registro
+            console.log('1')
+            return false
+          } else if (fechaInicioRegistro <= fechaFinFormulario && fechaFinFormulario <= fechaFinRegistro) { // Si la fecha final se encuentra entre las fechas del registro tratado
+            console.log('2')
+            return false
+          } else if (fechaInicioFormulario <= fechaInicioRegistro && fechaInicioRegistro <= fechaFinFormulario) { // La fecha inicial del registro se encuentra entre las fechas
+            console.log('3')
+            return false
+          } else if (fechaInicioFormulario <= fechaFinRegistro && fechaFinRegistro <= fechaFinFormulario) { // Si la fecha final del registro se encuentra entre las fechas
+            console.log('4')
+            return false
+          }
+        }
+        console.log('bien')
+        return true
+      } else if (response.data.data.resultado === 'sin_resultados') {
+        console.log('No tiene reservas')
+      }
     }
   }
 }

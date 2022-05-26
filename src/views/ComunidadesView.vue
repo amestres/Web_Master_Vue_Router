@@ -45,8 +45,6 @@ export default {
           console.log('No existe ninguna comunidad con ese id')
         }
       }
-      console.log(this.comunidades)
-      console.log(this.comunidades.length)
       this.cantidadComunidades = response.data.data.datos.length // Miramos a cuantas comunidades pertenece ese usuario
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('Este usuario no tiene ninguna comunidad creada')
