@@ -2,7 +2,7 @@
   <div class="container-menu">
     <button class="button" @click="goTo('comunidades')">Comunidades</button>
     <button class="button" @click="goTo('reservas')">Reservas</button>
-    <button class="button" @click="goTo('perfil')">Perfil</button>
+    <button class="button salir" @click="openAlert()">Salir</button>
   </div>
 </template>
 
@@ -23,6 +23,11 @@ export default {
       } else {
         this.$router.push(`/${this.login}/${palabra}`)
       }
+    },
+    openAlert () {
+      this.$confirm('¿Desea salir de la cuenta?', '', 'question').then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }

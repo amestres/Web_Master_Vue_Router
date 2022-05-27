@@ -2,6 +2,7 @@
   <div class="container-menu">
     <button class="button" @click="goTo('comunidades')">Comunidades</button>
     <button class="button" @click="goTo('crearComunidad')">Crear comunidad</button>
+    <button class="button" @click="openAlert()">Salir</button>
   </div>
 </template>
 
@@ -22,6 +23,11 @@ export default {
       } else {
         this.$router.push(`/ADMIN/${this.login}/${palabra}`)
       }
+    },
+    openAlert () {
+      this.$confirm('¿Desea salir de la cuenta?', '', 'question').then(() => {
+        this.$router.push('/')
+      })
     }
   }
 }
