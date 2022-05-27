@@ -34,7 +34,7 @@ export default {
       descripcion: '',
       fechaInicio: '',
       fechaFin: '',
-      resultado: ''
+      resultado: true
     }
   },
   async mounted () {
@@ -61,29 +61,12 @@ export default {
   methods: {
     async crearReserva () {
       if (this.validarFechas(this.fechaInicio, this.fechaFin)) {
-        if (this.validarReserva(this.fechaInicio, this.fechaFin)) {
-          const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
-            id_zona: localStorage.id_zona,
-            id_usuario: this.id_usuario,
-            fecha_inicio: this.fechaInicio,
-            fecha_fin: this.fechaFin
-          })
-
-          // Mostramos por consola que mensaje nos ha devuelto la api
-          if (response.data.data.resultado === 'ok') {
-            console.log('Reserva creada')
-          } else {
-            if (response.data.data.resultado === 'zona_no_activa') {
-              console.log('La zona común no está activa')
-            }
-          }
-        } else {
-          console.log('No se puede reservar en esta franja horaria')
-        }
+        this.validarReserva(this.fechaInicio, this.fechaFin)
       } else {
         console.log('Las fechas nos son válidas')
       }
     },
+
     validarFechas (inicio, fin) {
       const fechaActual = new Date()
       fechaActual.setMinutes(fechaActual.getMinutes() - fechaActual.getTimezoneOffset())
@@ -95,12 +78,15 @@ export default {
       }
       return false
     },
+
     async validarReserva (inicio, fin) {
       const response = await axios.post('http://localhost/api/?servicio=obtener_reservas', { // Buscamos todas las reservas de esa zona
         id_zona: localStorage.id_zona
       })
 
       if (response.data.data.resultado === 'ok') {
+        this.resultado = true // de entrada la franja horaria par ahacer la reserva es buena.
+
         for (let x = 0; x < response.data.data.datos.length; x++) {
           const fechaInicioRegistro = response.data.data.datos[x].fecha_inicio.substr(0, 16) // fecha inicio del registro en formato 2022-05-26 11:24:40
           const fechaFinRegistro = response.data.data.datos[x].fecha_fin.substr(0, 16) // fecha inicio del fin en formato 2022-05-26 11:24:40
@@ -120,30 +106,53 @@ export default {
           const fechaInicioFormulario = anyoInicio + '-' + mesInicio + '-' + diaInicio + ' ' + horaInicio + ':' + minutoInicio
           const fechaFinFormulario = anyoFin + '-' + mesFin + '-' + diaFin + ' ' + horaFin + ':' + minutoFin
 
-          // console.log('Fecha inicio formulario: ' + fechaInicioFormulario)
-          // console.log('Fecha fin formulario: ' + fechaFinFormulario)
+          if (fechaInicioFormulario >= fechaInicioRegistro && fechaInicioFormulario < fechaFinRegistro) { // si fecha inicio es más grande que las dos fechas del registro
+            this.resultado = false // la franja horaria no de válida
+            x = response.data.data.datos.length // forzamos salir del bucle
+          }
 
-          // console.log('Fecha inicio registro: ' + fechaInicioRegistro)
-          // console.log('Fecha fin registro: ' + fechaFinRegistro)
-
-          if (fechaInicioRegistro <= fechaInicioFormulario && fechaInicioFormulario <= fechaFinRegistro) { // Si la fecha inicial se encuentra entre las fechas del registro
-            console.log('1')
-            return false
-          } else if (fechaInicioRegistro <= fechaFinFormulario && fechaFinFormulario <= fechaFinRegistro) { // Si la fecha final se encuentra entre las fechas del registro tratado
-            console.log('2')
-            return false
-          } else if (fechaInicioFormulario <= fechaInicioRegistro && fechaInicioRegistro <= fechaFinFormulario) { // La fecha inicial del registro se encuentra entre las fechas
-            console.log('3')
-            return false
-          } else if (fechaInicioFormulario <= fechaFinRegistro && fechaFinRegistro <= fechaFinFormulario) { // Si la fecha final del registro se encuentra entre las fechas
-            console.log('4')
-            return false
+          if (fechaFinFormulario > fechaInicioRegistro && fechaFinFormulario <= fechaFinRegistro) { // si fecha fin es más pequeña que las dos fechas del registro
+            this.resultado = false // la franja horaria no de válida
+            x = response.data.data.datos.length // forzamos salir del bucle
           }
         }
-        console.log('bien')
-        return true
+
+        // Cuando ya tenemos los datos correctos creamos la reserva
+        if (this.resultado === true) {
+          const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
+            id_zona: localStorage.id_zona,
+            id_usuario: this.id_usuario,
+            fecha_inicio: this.fechaInicio,
+            fecha_fin: this.fechaFin
+          })
+
+          // Mostramos por consola que mensaje nos ha devuelto la api
+          if (response.data.data.resultado === 'ok') {
+            console.log('Reserva creada')
+          } else {
+            if (response.data.data.resultado === 'zona_no_activa') {
+              console.log('La zona común no está activa')
+            }
+          }
+        } else {
+          console.log('No se puede reservar en esta franja horaria')
+        }
       } else if (response.data.data.resultado === 'sin_resultados') {
-        console.log('No tiene reservas')
+        const response = await axios.post('http://localhost/api/?servicio=alta_reserva', {
+          id_zona: localStorage.id_zona,
+          id_usuario: this.id_usuario,
+          fecha_inicio: this.fechaInicio,
+          fecha_fin: this.fechaFin
+        })
+
+        // Mostramos por consola que mensaje nos ha devuelto la api
+        if (response.data.data.resultado === 'ok') {
+          console.log('Reserva creada')
+        } else {
+          if (response.data.data.resultado === 'zona_no_activa') {
+            console.log('La zona común no está activa')
+          }
+        }
       }
     }
   }
@@ -186,6 +195,7 @@ export default {
     background-color: #E7EFFF;
     display: flex;
     flex-direction: column;
+    align-items: center;
   }
 
   .container-radio-buttons{
