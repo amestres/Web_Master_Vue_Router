@@ -1,9 +1,10 @@
 <template>
   <div class="container-main">
     <MenuNormal></MenuNormal>
-      <div class="container-reservas">
-        <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]"></ReservaCard>
-      </div>
+    <div class="container-reservas">
+      <h1 class="title">Reservas</h1>
+      <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]"></ReservaCard>
+    </div>
   </div>
 </template>
 
@@ -68,5 +69,10 @@ export default {
     display: flex;
     flex-direction: column;
     align-items: center;
+  }
+
+  .title{
+    margin-top: 30px;
+    font-size: 20px;
   }
 </style>

@@ -371,6 +371,7 @@ export default {
     display: grid;
     justify-items: center;
     grid-template-columns: 50% 50%;
+    grid-template-rows: 36% 36%;
     padding: .75rem ;
     overflow-y: auto;
   }

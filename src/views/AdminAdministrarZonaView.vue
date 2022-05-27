@@ -83,12 +83,22 @@ export default {
       id_zona: localStorage.id_zona
     })
 
+    let posicion = 0
+
     if (responseReservas.data.data.resultado === 'ok') {
+      const fechaActual = new Date()
+      fechaActual.setMinutes(fechaActual.getMinutes() - fechaActual.getTimezoneOffset())
+      let fechaBuena = fechaActual.toISOString().slice(0, 16)
+      fechaBuena = fechaBuena.substr(0, 4) + '-' + fechaBuena.substr(5, 2) + '-' + fechaBuena.substr(8, 2) + ' ' + fechaBuena.substr(11, 2) + ':' + fechaBuena.substr(14, 2)
+
       for (let x = 0; x < responseReservas.data.data.datos.length; x++) {
-        this.reservas[x] = responseReservas.data.data.datos[x]
+        if (responseReservas.data.data.datos[x].fecha_inicio >= fechaBuena) {
+          this.reservas[posicion] = responseReservas.data.data.datos[x]
+          posicion = posicion + 1
+        }
       }
 
-      this.cantidadReservas = responseReservas.data.data.datos.length
+      this.cantidadReservas = responseReservas.data.data.datos.length - (responseReservas.data.data.datos.length - posicion)
     } else if (responseReservas.data.data.resultado === 'sin_resultados') {
       console.log('No se encuentra ninguna reserva')
     }
