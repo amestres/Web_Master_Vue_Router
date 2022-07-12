@@ -102,6 +102,7 @@ export default {
     font-size: 20px;
     background-color: rgb(13, 108, 252);
     color: white;
+    cursor: pointer;
   }
 
   .button:hover{

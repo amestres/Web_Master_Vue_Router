@@ -52,6 +52,7 @@ export default {
     background-color: #5271ff;
     color: white;
     font-size: 20px;
+    cursor: pointer;
   }
 
   .button:hover{

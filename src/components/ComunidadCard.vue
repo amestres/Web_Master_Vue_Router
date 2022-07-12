@@ -66,6 +66,7 @@ export default {
     background-color: #E7EFFF;
     border: 1px solid grey;
     border-radius: 15px;
+    cursor: pointer;
   }
   .container-card:hover{
     height: 200px;

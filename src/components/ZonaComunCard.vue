@@ -83,6 +83,7 @@ export default {
     border: 1px solid grey;
     border-radius: 15px;
     margin-top: 20px;
+    cursor: pointer;
   }
 
   .container-zona:hover{

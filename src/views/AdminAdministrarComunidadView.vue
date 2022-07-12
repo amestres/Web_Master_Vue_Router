@@ -319,6 +319,7 @@ export default {
     font-size: 20px;
     background-color: rgb(13, 108, 252);
     color: white;
+    cursor: pointer;
   }
 
   .button:hover{
@@ -421,6 +422,7 @@ export default {
   .boton-crear-zona:hover{
     background-color: #3246fc;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+    cursor: pointer;
   }
 
   /************* Tablet *************/

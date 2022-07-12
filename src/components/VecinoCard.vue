@@ -88,7 +88,8 @@ export default {
   }
 
   .icono-eliminar:hover{
-    color:red
+    color:red;
+    cursor: pointer;
   }
 
   .container-separador{

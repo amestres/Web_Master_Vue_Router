@@ -78,6 +78,7 @@ export default {
     background-color: #E7EFFF;
     border: 1px solid grey;
     border-radius: 15px;
+    cursor: pointer;
   }
   .container-vecino:hover{
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
