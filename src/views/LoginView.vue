@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="container-botones">
+    <div class="container-buttons">
       <router-link to="/" tag="button" class="button">Registro</router-link>
       <router-link to="/login" tag="button" class="button">Login</router-link>
     </div>
@@ -13,8 +13,15 @@
         </div>
 
         <div class="container-separador">
-          <label for="password" class="label-formulario">Password</label>
-          <input v-model="formData.password" type="password" name="password" required>
+          <div v-if="passwordStatus === 'hidden'" class="container-password-superior">
+            <label for="password" class="label-formulario">Password</label>
+            <i class="uil uil-eye icono-password" @click="showPassword()" style="font-size: 1em"></i>
+          </div>
+          <div v-else class="container-password-superior">
+            <label for="password" class="label-formulario">Password</label>
+            <i class="uil uil-eye-slash icono-password" @click="showPassword()" style="font-size: 1em"></i>
+          </div>
+          <input v-model="formData.password" type="password" name="password" id="passwordInput" required>
         </div>
 
         <input type="submit" id="boton" class="button" @click="logearUsuario" value="Entrar">
@@ -34,7 +41,8 @@ export default {
       formData: {
         login: '',
         password: ''
-      }
+      },
+      passwordStatus: 'hidden'
     }
   },
   methods: {
@@ -65,6 +73,17 @@ export default {
         }
       }
     },
+    showPassword () {
+      const password = document.getElementById('passwordInput')
+      if (password.type === 'password') {
+        password.type = 'text'
+        this.passwordStatus = 'visible'
+      } else {
+        password.type = 'password'
+        this.passwordStatus = 'hidden'
+      }
+    },
+
     resetInputs () {
       this.formData.login = ''
       this.formData.password = ''
@@ -74,7 +93,7 @@ export default {
 </script>
 
 <style scoped>
-  .container-botones{
+  .container-buttons{
     width: 100%;
     display: flex;
     justify-content: center;
@@ -110,6 +129,21 @@ export default {
     background-color: #E7EFFF;
   }
 
+  .container-separador:hover{
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
+  .container-password-superior{
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .icono-password:hover{
+    color: grey;
+    cursor: pointer;
+  }
+
   input{
     width: 100%;
     background-color: #E7EFFF;
@@ -125,9 +159,9 @@ export default {
 
   /************* Tablet *************/
   @media (max-width: 1280px) {
-    .container-botones{
-    display: flex;
-    flex-direction: column;
+    .container-buttons{
+      display: flex;
+      flex-direction: column;
     }
 
   }
@@ -135,8 +169,8 @@ export default {
   /************* Mobile *************/
   @media (max-width: 767px) {
     .container-botones{
-    display: flex;
-    flex-direction: column;
+      display: flex;
+      flex-direction: column;
     }
   }
 
