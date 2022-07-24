@@ -79,6 +79,7 @@ export default {
     border-radius: 15px;
   }
   .container-vecino:hover{
+    cursor: pointer;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 

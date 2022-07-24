@@ -15,11 +15,10 @@
         </div>
 
         <div class="container-separador">
-          <div class="container-radio-buttons">
-            <label for="activa" class="label-formulario" id="activo">Activa</label>
-            <input type="radio" name="activa" id="activa">
-            <input type="radio" name="activa" Id="noActiva">
-            <label for="activa" class="label-formulario" id="desactivo">Desactivada</label>
+          <div class="container-row">
+            <label class="label-toggle">No Activa</label>
+            <toggle-button v-if="renderComponent" v-model="infoToggle" color="#3246fc"/>
+            <label class="label-toggle">Activa</label>
           </div>
         </div>
 
@@ -54,7 +53,9 @@ export default {
       descripcion: '',
       activa: '',
       reservas: [],
-      cantidadReservas: ''
+      cantidadReservas: '',
+      infoToggle: true,
+      renderComponent: true
     }
   },
   async mounted () {
@@ -67,13 +68,12 @@ export default {
       this.id_comunidad = response.data.data.datos[0].id_comunidad
       this.nombre = response.data.data.datos[0].nombre
       this.descripcion = response.data.data.datos[0].descripcion
-      if (response.data.data.datos[0].activa === '1') { // Dependiendo del valor, marcamos como checked un radio button u otro
-        const radioButton = document.getElementById('activa')
-        radioButton.checked = true
+      if (response.data.data.datos[0].activa === '1') { // Dependiendo del valor, mostramos el botón toggle de un lado o de otro
+        this.infoToggle = true
       } else {
-        const radioButton = document.getElementById('noActiva')
-        radioButton.checked = true
+        this.infoToggle = false
       }
+      this.forceRerender() // Usamos esta funcion para actualizar el toggle
     } else if (response.data.data.resultado === 'sin_resultados') {
       console.log('No se encuuentra ninguna comunidad con el índice indicado')
     }
@@ -105,10 +105,9 @@ export default {
   },
   methods: {
     async editarZona () {
-      const radioButton = document.getElementById('activa')
-      if (radioButton.checked) {
+      if (this.infoToggle === true) {
         this.activa = '1'
-      } else {
+      } else if (this.infoToggle === false) {
         this.activa = '0'
       }
 
@@ -123,6 +122,13 @@ export default {
       if (response.data.data.resultado === 'ok') {
         console.log('Información actualizada')
       }
+    },
+    forceRerender () {
+      this.renderComponent = false
+
+      this.$nextTick(() => {
+        this.renderComponent = true
+      })
     }
   }
 }
@@ -171,8 +177,21 @@ export default {
     flex-direction: column;
   }
 
-  .container-radio-buttons{
+  .container-separador:hover{
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
+  .container-row{
     display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    padding-bottom: 5px;
+  }
+
+  .label-toggle{
+    margin-right: 10px;
+    margin-left: 10px;
   }
 
   input, textarea{
@@ -203,6 +222,7 @@ export default {
   .button:hover{
     background-color: #3246fc;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+    cursor: pointer;
   }
 
   .container-reservas{

@@ -54,11 +54,10 @@
             <label for="descripcionZona">Descripción: </label>
             <textarea v-model="descripcionZonaNueva" cols="0" rows="7" type="text" name="descripcionZona" required></textarea>
           </div>
-          <div class="container-radio-buttons">
-            <label for="zonaActiva" id="activo">Activa</label>
-            <input type="radio" name="zonaActiva" id="activa" checked>
-            <input type="radio" name="zonaActiva" id="noActiva">
-            <label for="zonaActiva" id="desactivo">Desactivada</label>
+          <div class="container-separador-toggle">
+            <label class="label-toggle">No Activa</label>
+            <toggle-button  v-model="infoToggle" color="#3246fc"/>
+            <label class="label-toggle">Activa</label>
           </div>
           <div class="container-separador-boton">
             <input type="submit" value="Crear zona" class="boton-crear-zona" @click="crearZona">
@@ -102,8 +101,8 @@ export default {
       cantidadZonas: '',
       nombreZonaNueva: '',
       descripcionZonaNueva: '',
-      zonaActiva: ''
-
+      zonaActiva: '',
+      infoToggle: true
     }
   },
   async mounted () {
@@ -208,10 +207,9 @@ export default {
     },
 
     async crearZona () {
-      const radioButton = document.getElementById('activa')
-      if (radioButton.checked) {
+      if (this.infoToggle === true) {
         this.zonaActiva = '1'
-      } else {
+      } else if (this.infoToggle === false) {
         this.zonaActiva = '0'
       }
 
@@ -293,6 +291,10 @@ export default {
     background-color: #E7EFFF;
     display: flex;
     flex-direction: column;
+  }
+
+  .container-separador:hover{
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
   }
 
   input, textarea{
@@ -394,6 +396,18 @@ export default {
 
   .container-separador-crearZona-2{
     font-size: 20px;
+  }
+
+  .container-separador-toggle{
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+  }
+
+  .label-toggle{
+    padding-right: 10px;
+    padding-left: 10px;
   }
 
   .container-radio-buttons{

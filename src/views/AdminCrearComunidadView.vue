@@ -130,6 +130,10 @@ export default {
     flex-direction: column;
   }
 
+  .container-separador:hover{
+    box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+  }
+
   input, textarea{
     width: 100%;
     background-color: #E7EFFF;
@@ -159,5 +163,6 @@ export default {
   .button:hover{
     background-color: #3246fc;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
+    cursor: pointer;
   }
   </style>
