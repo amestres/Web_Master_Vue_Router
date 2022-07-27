@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="container-main">
     <div class="container-buttons">
       <router-link to="/" tag="button" class="button">Registro</router-link>
       <router-link to="/login" tag="button" class="button">Login</router-link>
@@ -37,15 +37,20 @@
         <input type="submit" id="boton" class="button" @click="crearUsuario" value="Registrar usuario">
       </form>
     </div>
+    <MDBFooter></MDBFooter>
   </div>
 
 </template>
 
 <script>
 import axios from 'axios'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'RegistroView',
+  components: {
+    MDBFooter
+  },
   data () {
     return {
       formData: {
@@ -106,6 +111,10 @@ export default {
 </script>
 
 <style scoped>
+.container-main{
+    width: 100%;
+  }
+
   .container-buttons{
     width: 100%;
     display: flex;
@@ -134,11 +143,18 @@ export default {
     justify-content: center;
   }
 
+  form{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
   .container-separador{
+    width: 90%;
     margin-top: 10px;
+    padding: .75rem 1rem .25rem;
     justify-content: center;
     border-radius: .5rem;
-    padding: .75rem 1rem .25rem;
     background-color: #E7EFFF;
   }
 
@@ -172,10 +188,6 @@ export default {
 
   /************* Tablet *************/
   @media (max-width: 1280px) {
-    .container-buttons{
-      display: flex;
-      flex-direction: column;
-    }
 
   }
 
@@ -184,6 +196,15 @@ export default {
     .container-buttons{
       display: flex;
       flex-direction: column;
+      align-items: center;
+    }
+
+    .button{
+      margin: 0.5rem;
+    }
+
+    .container-formularios{
+      margin-top: 2rem;
     }
   }
 </style>

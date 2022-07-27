@@ -26,17 +26,20 @@
         <input type="submit" class="button" @click="crearComunidad" value="Crear comunidad">
       </form>
     </div>
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
 <script>
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'AdminCrearComunidadView',
   components: {
-    MenuAdmin
+    MenuAdmin,
+    MDBFooter
   },
   data () {
     return {
@@ -101,6 +104,7 @@ export default {
   .container-formulario{
     height: 92%;
     width: 100%;
+    margin-bottom: 20px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -164,5 +168,59 @@ export default {
     background-color: #3246fc;
     box-shadow: 0 .125rem .25rem rgba(0, 0, 0, .30);
     cursor: pointer;
+  }
+
+   /************* Tablet *************/
+  @media (max-width: 1280px) {
+    .container-lista-zonas{
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .container-lista-usuarios{
+      width: 20rem;
+    }
+
+    .container-crear-zona{
+      margin-bottom: 20px;
+    }
+
+  }
+
+  /************* Mobile *************/
+  @media (max-width: 767px) {
+    .container-usuarios{
+      flex-direction: column;
+    }
+
+    .container-form{
+      width: 100%;
+    }
+
+    .container-separador{
+      width: 80%;
+    }
+
+    .container-lista-usuarios{
+      width: 16rem;
+    }
+
+    .container-crear-zona{
+      width: 18rem;
+    }
+  }
+
+  @media (max-height: 703px) {
+    .button{
+      width: 16rem;
+      height: 3rem;
+      margin: 2rem;
+      border: 0.1px solid black;
+      border-radius: 20px;
+      font-size: 20px;
+      background-color: rgb(13, 108, 252);
+      color: white;
+    }
   }
   </style>

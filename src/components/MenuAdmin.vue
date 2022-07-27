@@ -58,4 +58,19 @@ export default {
   .button:hover{
     background-color: #3246fc;
   }
+
+  /************* Tablet *************/
+  @media (max-width: 1280px) {
+
+  }
+
+  /************* Mobile *************/
+  @media (max-width: 596px) {
+    .container-menu{
+      height: 50px;
+    }
+    .button{
+      font-size: 14px;
+    }
+  }
 </style>

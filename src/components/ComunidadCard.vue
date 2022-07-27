@@ -6,7 +6,7 @@
       </div>
       <i class="uil uil-trash-alt icono-eliminar" @click="openAlert(info.id_comunidad)" style="font-size: 1.5em"></i>
     </div>
-    <div class="anchura-perfecta altura-perfecta" @click="goTo">
+    <div class="anchura-perfecta altura-perfecta informacion" @click="goTo">
       <p>Dirección: {{info.direccion}}</p>
       <p>Código postal: {{info.codigo_postal}}</p>
       <p>Descripción: {{info.descripcion}}</p>
@@ -96,5 +96,22 @@ export default {
 
   .icono-eliminar:hover{
     color:red
+  }
+
+  /************* Tablet *************/
+  @media (max-width: 1280px) {
+    .container-card{
+      width: 40rem;
+    }
+  }
+
+  /************* Mobile *************/
+  @media (max-width: 767px) {
+    .container-card{
+      width: 80%;
+    }
+    .informacion>p{
+      font-size: 14px;
+    }
   }
 </style>

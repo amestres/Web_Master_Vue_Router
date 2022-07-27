@@ -31,6 +31,7 @@
         <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]" tipo="admin"></ReservaCard>
       </div>
     </div>
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
@@ -38,12 +39,14 @@
 import axios from 'axios'
 import MenuAdmin from '../components/MenuAdmin.vue'
 import ReservaCard from '../components/ReservaCard.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'AdminEditarZonaView',
   components: {
     MenuAdmin,
-    ReservaCard
+    ReservaCard,
+    MDBFooter
   },
   data () {
     return {
@@ -229,7 +232,7 @@ export default {
     width: 50%;
     height: 40rem;
     margin-top: 20px;
-    margin-bottom: 20px;
+    margin-bottom: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -246,7 +249,7 @@ export default {
       align-items: center;
     }
     .container-reservas{
-      width: 80%;
+      width: 40rem;
     }
   }
 
@@ -260,6 +263,16 @@ export default {
       width: 100%;
     }
 
+    .container-separador{
+      width: 28rem;
+    }
+
+    .container-reservas{
+      width: 84%;
+    }
+  }
+
+  @media (max-width: 546px) {
     .container-separador{
       width: 80%;
     }

@@ -66,7 +66,7 @@
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]" tipo="admin"></ZonaComunCard>
       </div>
     </div>
-
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
@@ -76,6 +76,7 @@ import MenuAdmin from '../components/MenuAdmin.vue'
 import VecinoCard from '../components/VecinoCard.vue'
 import UsuarioCard from '../components/UsuarioCard.vue'
 import ZonaComunCard from '../components/ZonaComunCard.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'AdminEditarComunidadView',
@@ -83,7 +84,8 @@ export default {
     MenuAdmin,
     VecinoCard,
     UsuarioCard,
-    ZonaComunCard
+    ZonaComunCard,
+    MDBFooter
   },
   data () {
     return {
@@ -459,8 +461,8 @@ export default {
 
   /************* Mobile *************/
   @media (max-width: 767px) {
-    .container-lista-usuarios{
-      width: 20rem;
+    .container-usuarios{
+      flex-direction: column;
     }
 
     .container-form{
@@ -472,7 +474,7 @@ export default {
     }
 
     .container-lista-usuarios{
-      width: 14rem;
+      width: 16rem;
     }
 
     .container-crear-zona{
