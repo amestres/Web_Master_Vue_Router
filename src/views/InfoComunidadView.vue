@@ -16,7 +16,7 @@
         <ZonaComunCard v-for="zonaComun in cantidadZonas" :key="zonaComun.id" :info="zonas[zonaComun-1]"></ZonaComunCard>
       </div>
     </div>
-
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
@@ -24,12 +24,14 @@
 import axios from 'axios'
 import MenuNormal from '../components/MenuNormal.vue'
 import ZonaComunCard from '../components/ZonaComunCard.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'InfoComunidadView',
   components: {
     MenuNormal,
-    ZonaComunCard
+    ZonaComunCard,
+    MDBFooter
   },
   data () {
     return {
@@ -123,7 +125,7 @@ export default {
   }
 
   .container-separador{
-    width: 78%;
+    width: 40rem;
     margin-top: 10px;
     justify-content: center;
     border-radius: .5rem;
@@ -196,6 +198,7 @@ export default {
 
   .container-zonas{
     width: 100%;
+    margin-bottom: 60px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -203,7 +206,7 @@ export default {
 
   .container-lista-zonas{
     width: 90%;
-    height: 65rem;
+    height: 100%;
     margin-top: 10px;
     margin-bottom: 20px;
     display: grid;

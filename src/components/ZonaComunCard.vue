@@ -129,7 +129,7 @@ export default {
   /************* Mobile *************/
   @media (max-width: 767px) {
     .container-zona{
-      width: 18rem;
+      width: 80%;
     }
   }
 

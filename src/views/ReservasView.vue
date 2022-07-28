@@ -5,6 +5,7 @@
       <h1 class="title">Reservas</h1>
       <ReservaCard v-for="reserva in cantidadReservas" :key="reserva.id" :info="reservas[reserva-1]"></ReservaCard>
     </div>
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
@@ -12,12 +13,14 @@
 import axios from 'axios'
 import MenuNormal from '../components/MenuNormal.vue'
 import ReservaCard from '../components/ReservaCard.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'ReservasView',
   components: {
     MenuNormal,
-    ReservaCard
+    ReservaCard,
+    MDBFooter
   },
   data () {
     return {

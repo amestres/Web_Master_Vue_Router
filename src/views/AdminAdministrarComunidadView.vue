@@ -478,7 +478,7 @@ export default {
     }
 
     .container-crear-zona{
-      width: 18rem;
+      width: 80%;
     }
   }
 

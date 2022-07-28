@@ -4,6 +4,7 @@
     <div class="container-comunidades">
       <ComunidadCardUsuario v-for="comunidad in cantidadComunidades" :key="comunidad.id_comunidad" :info="comunidades[comunidad-1]"></ComunidadCardUsuario>
     </div>
+    <MDBFooter></MDBFooter>
   </div>
 </template>
 
@@ -11,12 +12,14 @@
 import axios from 'axios'
 import MenuNormal from '../components/MenuNormal.vue'
 import ComunidadCardUsuario from '../components/ComunidadCardUsuario.vue'
+import MDBFooter from '../components/Footer.vue'
 
 export default {
   name: 'ComunidadesView',
   components: {
     MenuNormal,
-    ComunidadCardUsuario
+    ComunidadCardUsuario,
+    MDBFooter
   },
   data () {
     return {
